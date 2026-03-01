@@ -559,24 +559,39 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
-<!-- Preview Modal -->
-<div id="previewModal" class="fixed inset-0 z-[60] hidden">
+<!-- Preview Modal A4 -->
+<div id="previewModal" class="fixed inset-0 z-[60] hidden overflow-auto">
     <div class="absolute inset-0 bg-black/80" onclick="closeModal('previewModal')"></div>
-    <div class="absolute inset-4 bg-white rounded-xl overflow-hidden flex flex-col">
-        <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-            <h3 class="font-bold text-slate-800">Anteprima Preventivo</h3>
-            <div class="flex items-center gap-2">
-                <button onclick="stampaPreventivo()" class="px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm font-medium hover:bg-cyan-700">
-                    🖨️ Stampa PDF
-                </button>
-                <button onclick="closeModal('previewModal')" class="p-2 text-slate-400 hover:text-slate-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
+    <div class="relative min-h-screen flex items-start justify-center py-8">
+        <!-- Contenitore A4 -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col" style="width: 794px; max-width: 98vw;">
+            <!-- Toolbar -->
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <h3 class="font-bold text-slate-800">Anteprima Preventivo</h3>
+                <div class="flex items-center gap-3">
+                    <!-- Zoom Controls -->
+                    <div class="flex items-center bg-white border border-slate-200 rounded-lg overflow-hidden">
+                        <button onclick="setZoom(0.8)" class="px-3 py-1.5 text-slate-600 hover:bg-slate-100 text-sm">80%</button>
+                        <button onclick="setZoom(1)" class="px-3 py-1.5 text-slate-600 hover:bg-slate-100 text-sm border-l border-r border-slate-200">100%</button>
+                        <button onclick="setZoom(1.2)" class="px-3 py-1.5 text-slate-600 hover:bg-slate-100 text-sm">120%</button>
+                    </div>
+                    <button onclick="stampaPreventivo()" class="px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm font-medium hover:bg-cyan-700">
+                        🖨️ Stampa PDF
+                    </button>
+                    <button onclick="closeModal('previewModal')" class="p-2 text-slate-400 hover:text-slate-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- A4 Container with Zoom -->
+            <div id="a4Container" class="bg-slate-100 overflow-auto" style="height: calc(100vh - 200px);">
+                <div id="a4Wrapper" style="transform-origin: top center; transition: transform 0.2s;">
+                    <iframe id="previewFrame" style="width: 794px; height: 1123px; border: 0; background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"></iframe>
+                </div>
             </div>
         </div>
-        <iframe id="previewFrame" class="flex-1 w-full border-0"></iframe>
     </div>
 </div>
 
@@ -1685,6 +1700,16 @@ async function generaPreventivo() {
 function stampaPreventivo() {
     const frame = document.getElementById('previewFrame');
     frame.contentWindow.print();
+}
+
+// Zoom per anteprima A4
+let currentZoom = 1;
+function setZoom(zoom) {
+    currentZoom = zoom;
+    const wrapper = document.getElementById('a4Wrapper');
+    if (wrapper) {
+        wrapper.style.transform = `scale(${zoom})`;
+    }
 }
 
 async function salvaPreventivoGestionale() {
