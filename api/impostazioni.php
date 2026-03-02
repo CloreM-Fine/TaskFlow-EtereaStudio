@@ -423,9 +423,10 @@ function getDatiAzienda(): void {
     $stmt->execute();
     $dati['firma'] = $stmt->fetchColumn() ?: '';
     
-    // Costruisci URL completi per logo e firma
-    $dati['logo_url'] = $dati['logo'] ? 'https://' . $_SERVER['HTTP_HOST'] . '/' . $dati['logo'] : '';
-    $dati['firma_url'] = $dati['firma'] ? 'https://' . $_SERVER['HTTP_HOST'] . '/' . $dati['firma'] : '';
+    // Costruisci URL completi per logo e firma (con path corretto)
+    $baseUrl = 'https://' . $_SERVER['HTTP_HOST'];
+    $dati['logo_url'] = $dati['logo'] ? $baseUrl . '/assets/uploads/logo_azienda/' . basename($dati['logo']) : '';
+    $dati['firma_url'] = $dati['firma'] ? $baseUrl . '/assets/uploads/firma_azienda/' . basename($dati['firma']) : '';
     
     jsonResponse(true, $dati);
 }
@@ -504,7 +505,7 @@ function uploadLogoAzienda(): void {
     
     if (move_uploaded_file($file['tmp_name'], $filepath)) {
         global $pdo;
-        $logoUrl = $filename;
+        $logoUrl = 'assets/uploads/logo_azienda/' . $filename;
         
         $stmt = $pdo->prepare("
             INSERT INTO impostazioni (chiave, valore) 
@@ -513,7 +514,8 @@ function uploadLogoAzienda(): void {
         ");
         $stmt->execute([$logoUrl, $logoUrl]);
         
-        jsonResponse(true, ['logo_url' => $logoUrl], 'Logo caricato con successo');
+        $fullUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/' . $logoUrl;
+        jsonResponse(true, ['logo_url' => $fullUrl], 'Logo caricato con successo');
     } else {
         jsonResponse(false, null, 'Errore durante il caricamento');
     }
@@ -1298,7 +1300,8 @@ function uploadFirmaAzienda(): void {
         ");
         $stmt->execute([$firmaUrl, $firmaUrl]);
         
-        jsonResponse(true, ['firma' => $filename, 'firma_url' => $firmaUrl], 'Firma caricata con successo');
+        $fullUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/' . $firmaUrl;
+        jsonResponse(true, ['firma' => $filename, 'firma_url' => $fullUrl], 'Firma caricata con successo');
     } else {
         jsonResponse(false, null, 'Errore durante il caricamento');
     }
