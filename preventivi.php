@@ -584,6 +584,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button onclick="setZoom(1)" class="px-3 py-1.5 text-slate-600 hover:bg-slate-100 text-sm border-l border-r border-slate-200">100%</button>
                         <button onclick="setZoom(1.2)" class="px-3 py-1.5 text-slate-600 hover:bg-slate-100 text-sm">120%</button>
                     </div>
+                    <button onclick="salvaPreventivoGestionale()" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">
+                        💾 Salva nel Gestionale
+                    </button>
                     <button onclick="stampaPreventivo()" class="px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm font-medium hover:bg-cyan-700">
                         🖨️ Stampa PDF
                     </button>
