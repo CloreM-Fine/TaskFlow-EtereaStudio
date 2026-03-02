@@ -1604,6 +1604,11 @@ function mostraLogoAzienda(url) {
     const placeholder = document.getElementById('logoAziendaPlaceholder');
     const btnRimuovi = document.getElementById('btnRimuoviLogoAzienda');
     
+    if (!url || url === 'undefined') {
+        nascondiLogoAzienda();
+        return;
+    }
+    
     img.src = url;
     img.classList.remove('hidden');
     placeholder.classList.add('hidden');
@@ -1629,6 +1634,11 @@ function mostraFirmaAzienda(url) {
     const img = document.getElementById('firmaAziendaImg');
     const placeholder = document.getElementById('firmaAziendaPlaceholder');
     const btnRimuovi = document.getElementById('btnRimuoviFirmaAzienda');
+    
+    if (!url || url === 'undefined') {
+        nascondiFirmaAzienda();
+        return;
+    }
     
     img.src = url;
     img.classList.remove('hidden');

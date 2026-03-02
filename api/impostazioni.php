@@ -204,59 +204,65 @@ function exportBackup(string $tipo): void {
     switch ($tipo) {
         case 'clienti':
             fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM per Excel
-            fputcsv($output, ['ID', 'Nome', 'Email', 'Telefono', 'Indirizzo', 'Data Creazione']);
-            $stmt = $pdo->query("SELECT * FROM clienti ORDER BY data_creazione DESC");
+            fputcsv($output, ['ID', 'Ragione Sociale', 'Tipo', 'P.IVA/CF', 'Email', 'Telefono', 'Cellulare', 'Indirizzo', 'Città', 'CAP', 'Provincia', 'Data Creazione']);
+            $stmt = $pdo->query("SELECT * FROM clienti ORDER BY created_at DESC");
             while ($row = $stmt->fetch()) {
                 fputcsv($output, [
-                    $row['id'], $row['nome'], $row['email'], 
-                    $row['telefono'], $row['indirizzo'], $row['data_creazione']
+                    $row['id'], $row['ragione_sociale'], $row['tipo'], $row['piva_cf'],
+                    $row['email'], $row['telefono'], $row['cellulare'], $row['indirizzo'],
+                    $row['citta'], $row['cap'], $row['provincia'], $row['created_at']
                 ]);
             }
             break;
             
         case 'progetti':
             fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-            fputcsv($output, ['ID', 'Nome', 'Cliente', 'Stato', 'Prezzo', 'Data Creazione']);
+            fputcsv($output, ['ID', 'Titolo', 'Cliente', 'Stato', 'Budget', 'Data Inizio', 'Data Fine', 'Data Creazione']);
             $stmt = $pdo->query("
-                SELECT p.*, c.nome as cliente_nome 
+                SELECT p.*, c.ragione_sociale as cliente_nome 
                 FROM progetti p 
                 LEFT JOIN clienti c ON p.cliente_id = c.id 
-                ORDER BY p.data_creazione DESC
+                ORDER BY p.created_at DESC
             ");
             while ($row = $stmt->fetch()) {
                 fputcsv($output, [
-                    $row['id'], $row['nome'], $row['cliente_nome'],
-                    $row['stato'], $row['prezzo_totale'], $row['data_creazione']
+                    $row['id'], $row['titolo'], $row['cliente_nome'],
+                    $row['stato'], $row['budget'], $row['data_inizio'], $row['data_fine'], $row['created_at']
                 ]);
             }
             break;
             
         case 'finanze':
             fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-            fputcsv($output, ['Data', 'Tipo', 'Importo', 'Wallet', 'Descrizione', 'Progetto']);
+            fputcsv($output, ['Data', 'Tipo', 'Importo', 'Utente', 'Descrizione', 'Progetto', 'Data Creazione']);
             $stmt = $pdo->query("
-                SELECT t.*, w.nome as wallet_nome, p.nome as progetto_nome
-                FROM wallet_transactions t
-                JOIN wallets w ON t.wallet_id = w.id
+                SELECT t.*, u.nome as utente_nome, p.titolo as progetto_nome
+                FROM transazioni_economiche t
+                JOIN utenti u ON t.utente_id = u.id
                 LEFT JOIN progetti p ON t.progetto_id = p.id
-                ORDER BY t.data DESC
+                ORDER BY t.created_at DESC
             ");
             while ($row = $stmt->fetch()) {
                 fputcsv($output, [
                     $row['data'], $row['tipo'], $row['importo'],
-                    $row['wallet_nome'], $row['descrizione'], $row['progetto_nome']
+                    $row['utente_nome'], $row['descrizione'], $row['progetto_nome'], $row['created_at']
                 ]);
             }
             break;
             
         case 'appuntamenti':
             fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-            fputcsv($output, ['ID', 'Titolo', 'Data Inizio', 'Data Fine', 'Tipo', 'Descrizione']);
-            $stmt = $pdo->query("SELECT * FROM eventi_calendario ORDER BY data_inizio DESC");
+            fputcsv($output, ['ID', 'Titolo', 'Data Inizio', 'Data Fine', 'Tipo', 'Descrizione', 'Colore', 'Creata da', 'Data Creazione']);
+            $stmt = $pdo->query("
+                SELECT a.*, u.nome as utente_nome 
+                FROM appuntamenti a 
+                LEFT JOIN utenti u ON a.creato_da = u.id
+                ORDER BY a.data_inizio DESC
+            ");
             while ($row = $stmt->fetch()) {
                 fputcsv($output, [
                     $row['id'], $row['titolo'], $row['data_inizio'],
-                    $row['data_fine'], $row['tipo'], $row['descrizione']
+                    $row['data_fine'], $row['tipo'], $row['descrizione'], $row['colore'], $row['utente_nome'], $row['created_at']
                 ]);
             }
             break;
@@ -416,6 +422,10 @@ function getDatiAzienda(): void {
     $stmt = $pdo->prepare("SELECT valore FROM impostazioni WHERE chiave = 'firma_azienda'");
     $stmt->execute();
     $dati['firma'] = $stmt->fetchColumn() ?: '';
+    
+    // Costruisci URL completi per logo e firma
+    $dati['logo_url'] = $dati['logo'] ? 'https://' . $_SERVER['HTTP_HOST'] . '/' . $dati['logo'] : '';
+    $dati['firma_url'] = $dati['firma'] ? 'https://' . $_SERVER['HTTP_HOST'] . '/' . $dati['firma'] : '';
     
     jsonResponse(true, $dati);
 }
