@@ -447,6 +447,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <input type="text" id="prevCliente" 
                                class="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none"
                                placeholder="Oppure scrivi nome cliente manualmente">
+                        <!-- Dati cliente dettagliati -->
+                        <div id="clienteDettagli" class="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm hidden">
+                            <div class="font-medium text-slate-800 mb-1" id="cliNome"></div>
+                            <div class="text-slate-600 text-xs space-y-0.5">
+                                <div id="cliIndirizzo"></div>
+                                <div id="cliPivaCf"></div>
+                                <div id="cliContatti"></div>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">N. Preventivo</label>
@@ -890,9 +899,59 @@ function updateClienteInput() {
     const select = document.getElementById('prevClienteSelect');
     const input = document.getElementById('prevCliente');
     const selectedOption = select.options[select.selectedIndex];
-    if (select.value && selectedOption) {
-        input.value = selectedOption.getAttribute('data-nome') || select.value;
+    const clienteId = select.value;
+    
+    if (clienteId && selectedOption) {
+        const clienteNome = selectedOption.getAttribute('data-nome') || '';
+        input.value = clienteNome;
+        
+        // Trova i dati completi del cliente
+        const cliente = clientiData.find(c => c.id === clienteId);
+        if (cliente) {
+            mostraDettagliCliente(cliente);
+        }
+    } else {
+        // Nascondi dettagli se nessun cliente selezionato
+        document.getElementById('clienteDettagli').classList.add('hidden');
     }
+}
+
+function mostraDettagliCliente(cliente) {
+    const dettagliDiv = document.getElementById('clienteDettagli');
+    
+    // Nome
+    document.getElementById('cliNome').textContent = cliente.ragione_sociale || '';
+    
+    // Indirizzo completo
+    let indirizzo = '';
+    if (cliente.indirizzo) indirizzo += cliente.indirizzo;
+    if (cliente.cap || cliente.citta) {
+        if (indirizzo) indirizzo += ', ';
+        indirizzo += (cliente.cap || '') + ' ' + (cliente.citta || '');
+    }
+    if (cliente.provincia) indirizzo += ' (' + cliente.provincia + ')';
+    document.getElementById('cliIndirizzo').textContent = indirizzo || 'Indirizzo non disponibile';
+    document.getElementById('cliIndirizzo').style.display = indirizzo ? 'block' : 'none';
+    
+    // P.IVA / CF
+    let pivaCf = '';
+    if (cliente.piva) pivaCf = 'P.IVA: ' + cliente.piva;
+    else if (cliente.cf) pivaCf = 'CF: ' + cliente.cf;
+    document.getElementById('cliPivaCf').textContent = pivaCf;
+    document.getElementById('cliPivaCf').style.display = pivaCf ? 'block' : 'none';
+    
+    // Contatti (email e telefono)
+    let contatti = '';
+    if (cliente.email) contatti = cliente.email;
+    if (cliente.telefono) {
+        if (contatti) contatti += ' | ';
+        contatti += 'Tel: ' + cliente.telefono;
+    }
+    document.getElementById('cliContatti').textContent = contatti;
+    document.getElementById('cliContatti').style.display = contatti ? 'block' : 'none';
+    
+    // Mostra il box
+    dettagliDiv.classList.remove('hidden');
 }
 
 async function loadPreventivi() {
