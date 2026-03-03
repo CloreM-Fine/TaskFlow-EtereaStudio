@@ -1024,10 +1024,14 @@
             return;
         }
         
-        // Verifica se esistono già elementi della guida nel DOM
-        if (document.getElementById('guida-overlay')) {
-            console.log('TaskFlow Guida: Elementi già presenti nel DOM, pulizia in corso...');
-            await fineGuida(true);
+        // Verifica se esistono già elementi della guida nel DOM (anche multipli)
+        const elementiEsistenti = document.querySelectorAll('.guida-overlay, .guida-tooltip');
+        if (elementiEsistenti.length > 0) {
+            console.log('TaskFlow Guida: Pulizia elementi esistenti in corso...');
+            // Rimuovi TUTTI gli elementi senza animazione
+            document.querySelectorAll('.guida-overlay, .guida-spotlight, .guida-tooltip, .guida-skip-btn').forEach(el => el.remove());
+            document.body.classList.remove('guida-block-interactions');
+            clearHighlightedElement();
         }
         
         // Verifica se già vista
@@ -1069,40 +1073,42 @@
      * Termina la guida
      */
     async function fineGuida(saltata = false) {
-        // Se la guida non è attiva, non fare nulla
-        if (!guidaState.isActive && !document.getElementById('guida-overlay')) {
-            return;
-        }
-        
-        guidaState.isActive = false;
-        guidaState.completed = !saltata;
+        // Rimuovi TUTTI gli elementi della guida, anche se ci sono multiple istanze
+        const tuttiOverlay = document.querySelectorAll('.guida-overlay');
+        const tuttiSpotlight = document.querySelectorAll('.guida-spotlight');
+        const tuttiTooltip = document.querySelectorAll('.guida-tooltip');
+        const tuttiSkipBtn = document.querySelectorAll('.guida-skip-btn');
         
         // Segna come vista se completata o saltata
-        await segnaGuidaVista();
+        if (guidaState.isActive || tuttiOverlay.length > 0) {
+            await segnaGuidaVista();
+        }
+        
+        // Stato
+        guidaState.isActive = false;
+        guidaState.completed = !saltata;
         
         // Pulisci elemento evidenziato
         clearHighlightedElement();
         
-        // Animazione uscita
-        const { overlay, tooltip, spotlight, skipBtn } = guidaState.elements;
+        // Rimuovi classe blocco interazioni
+        document.body.classList.remove('guida-block-interactions');
         
-        if (tooltip) tooltip.classList.remove('active');
-        if (skipBtn) skipBtn.classList.remove('active');
-        if (spotlight) spotlight.classList.remove('active');
-        
-        setTimeout(() => {
-            if (overlay) overlay.classList.remove('active');
-        }, 200);
+        // Animazione uscita per tutti gli elementi
+        [...tuttiTooltip, ...tuttiSkipBtn, ...tuttiSpotlight].forEach(el => {
+            el.classList.remove('active');
+        });
         
         setTimeout(() => {
-            // Rimuovi classe blocco interazioni
-            document.body.classList.remove('guida-block-interactions');
-            
-            // Rimuovi elementi DOM
-            if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-            if (spotlight && spotlight.parentNode) spotlight.parentNode.removeChild(spotlight);
-            if (tooltip && tooltip.parentNode) tooltip.parentNode.removeChild(tooltip);
-            if (skipBtn && skipBtn.parentNode) skipBtn.parentNode.removeChild(skipBtn);
+            tuttiOverlay.forEach(el => el.classList.remove('active'));
+        }, 100);
+        
+        // Rimuovi TUTTO dal DOM dopo animazione
+        setTimeout(() => {
+            tuttiOverlay.forEach(el => el.remove());
+            tuttiSpotlight.forEach(el => el.remove());
+            tuttiTooltip.forEach(el => el.remove());
+            tuttiSkipBtn.forEach(el => el.remove());
             
             // Reset stato
             guidaState.elements = {};
@@ -1112,7 +1118,7 @@
             if (!saltata && typeof showToast === 'function') {
                 showToast('Guida completata! Sei pronto per usare TaskFlow 🎉', 'success');
             }
-        }, 500);
+        }, 400);
     }
 
     /**
