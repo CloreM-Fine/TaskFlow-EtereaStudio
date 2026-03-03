@@ -32,7 +32,7 @@
             id: 'sidebar',
             title: 'La tua navigazione',
             content: 'Qui trovi tutte le sezioni del gestionale: Dashboard, Progetti, Clienti, Scadenze, Preventivi, Calendario, Finanze, Tasse e Impostazioni.',
-            target: '#sidebar' // sidebar esiste già come ID
+            target: '#sidebar',
             position: 'right',
             actionType: 'auto', // Passa automaticamente dopo 3 secondi o con click
             highlight: true
@@ -95,7 +95,7 @@
             id: 'profilo',
             title: 'Profilo e Impostazioni ⚙️',
             content: 'Accedi al tuo profilo, alle notifiche e alle impostazioni del sistema dal menu in alto a destra o dalla sidebar.',
-            target: '.dropdown' // profilo dropdown
+            target: '.dropdown',
             position: 'bottom',
             actionType: 'click',
             highlight: true
