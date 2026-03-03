@@ -28,8 +28,8 @@ if (file_exists($envPath)) {
 // DATABASE - Da .env con fallback
 // -----------------------------------------------------
 define('DB_HOST', env('DB_HOST', 'localhost'));
-define('DB_NAME', env('DB_NAME', 'db4qhf5gnmj3lz'));
-define('DB_USER', env('DB_USER', 'ucwurog3xr8tf'));
+define('DB_NAME', env('DB_NAME', 'dbxs46wroi3714'));
+define('DB_USER', env('DB_USER', 'ub7fszgir5zwg'));
 define('DB_PASS', env('DB_PASS', ''));
 
 // -----------------------------------------------------
