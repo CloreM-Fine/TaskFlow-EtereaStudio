@@ -130,8 +130,8 @@
         .guida-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(2px);
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(1px);
             z-index: 9998;
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -147,7 +147,7 @@
             position: absolute;
             border-radius: 16px;
             box-shadow: 
-                0 0 0 9999px rgba(0, 0, 0, 0.75),
+                0 0 0 9999px rgba(0, 0, 0, 0.35),
                 0 0 0 4px rgba(8, 145, 178, 0.8),
                 0 0 30px rgba(8, 145, 178, 0.5);
             z-index: 9999;
