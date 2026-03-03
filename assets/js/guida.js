@@ -224,6 +224,7 @@
             z-index: 10000;
             opacity: 0;
             transform: translateY(10px) scale(0.98);
+            pointer-events: auto !important;
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
@@ -387,6 +388,9 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 10000;
         }
         
         .guida-btn-primary {
@@ -443,6 +447,7 @@
             justify-content: center;
             transition: all 0.2s ease;
             z-index: 10001;
+            pointer-events: auto !important;
         }
         
         .guida-close:hover {
@@ -837,7 +842,7 @@
         let buttonsHtml = '';
         if (isFirst) {
             buttonsHtml = `
-                <button class="guida-btn guida-btn-skip" onclick="TaskFlowGuida.fineGuida(true)">Salta</button>
+                <button class="guida-btn guida-btn-skip" onclick="TaskFlowGuida.fine(true)">Salta</button>
                 <button class="guida-btn guida-btn-primary" onclick="TaskFlowGuida.prossimoStep()">
                     Inizia la guida
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -848,7 +853,7 @@
         } else if (isLast) {
             buttonsHtml = `
                 <button class="guida-btn guida-btn-secondary" onclick="TaskFlowGuida.stepPrecedente()">Indietro</button>
-                <button class="guida-btn guida-btn-primary" onclick="TaskFlowGuida.fineGuida()">
+                <button class="guida-btn guida-btn-primary" onclick="TaskFlowGuida.fine()">
                     🚀 Inizia a usare TaskFlow
                 </button>
             `;
