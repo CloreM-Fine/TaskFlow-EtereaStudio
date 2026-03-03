@@ -119,7 +119,8 @@
         currentStep: 0,
         totalSteps: GUIDA_STEPS.length,
         completed: false,
-        elements: {}
+        elements: {},
+        highlightedElement: null // Traccia l'elemento evidenziato per pulizia
     };
 
     // ==========================================
@@ -147,9 +148,11 @@
             position: absolute;
             border-radius: 16px;
             box-shadow: 
-                0 0 0 9999px rgba(0, 0, 0, 0.35),
-                0 0 0 4px rgba(8, 145, 178, 0.8),
-                0 0 30px rgba(8, 145, 178, 0.5);
+                0 0 0 9999px rgba(0, 0, 0, 0.45),
+                0 0 0 5px #0891B2,
+                0 0 0 8px rgba(8, 145, 178, 0.5),
+                0 0 30px rgba(8, 145, 178, 0.8),
+                0 0 60px rgba(8, 145, 178, 0.4);
             z-index: 9999;
             opacity: 0;
             transform: scale(0.95);
@@ -169,19 +172,44 @@
         
         .guida-spotlight.interactive:hover {
             box-shadow: 
-                0 0 0 9999px rgba(0, 0, 0, 0.75),
-                0 0 0 6px rgba(8, 145, 178, 1),
-                0 0 40px rgba(8, 145, 178, 0.7);
+                0 0 0 9999px rgba(0, 0, 0, 0.55),
+                0 0 0 6px #06B6D4,
+                0 0 0 10px rgba(6, 182, 212, 0.5),
+                0 0 50px rgba(6, 182, 212, 1),
+                0 0 80px rgba(6, 182, 212, 0.5);
         }
 
         /* Pulsazione dello spotlight */
         @keyframes guidapulse {
-            0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75), 0 0 0 4px rgba(8, 145, 178, 0.8), 0 0 30px rgba(8, 145, 178, 0.5); }
-            50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75), 0 0 0 6px rgba(8, 145, 178, 1), 0 0 50px rgba(8, 145, 178, 0.8); }
+            0%, 100% { 
+                box-shadow: 
+                    0 0 0 9999px rgba(0, 0, 0, 0.45),
+                    0 0 0 5px #0891B2,
+                    0 0 0 8px rgba(8, 145, 178, 0.5),
+                    0 0 30px rgba(8, 145, 178, 0.8),
+                    0 0 60px rgba(8, 145, 178, 0.4);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 0 9999px rgba(0, 0, 0, 0.50),
+                    0 0 0 7px #06B6D4,
+                    0 0 0 12px rgba(6, 182, 212, 0.6),
+                    0 0 50px rgba(6, 182, 212, 1),
+                    0 0 90px rgba(6, 182, 212, 0.6);
+            }
         }
         
         .guida-spotlight.pulse {
-            animation: guidapulse 2s infinite;
+            animation: guidapulse 1.5s infinite ease-in-out;
+        }
+
+        /* Elemento target evidenziato */
+        .guida-target-highlight {
+            position: relative !important;
+            z-index: 9999 !important;
+            outline: 3px solid #0891B2 !important;
+            outline-offset: 4px !important;
+            border-radius: 8px !important;
         }
 
         /* Tooltip/Bubble */
@@ -414,6 +442,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+            z-index: 10001;
         }
         
         .guida-close:hover {
@@ -624,6 +653,17 @@
      * Crea gli elementi DOM della guida
      */
     function createElements() {
+        // Se gli elementi esistono già, non ricrearli
+        if (document.getElementById('guida-overlay')) {
+            guidaState.elements = {
+                overlay: document.getElementById('guida-overlay'),
+                spotlight: document.getElementById('guida-spotlight'),
+                tooltip: document.getElementById('guida-tooltip'),
+                skipBtn: document.getElementById('guida-skip')
+            };
+            return;
+        }
+        
         // Overlay
         const overlay = document.createElement('div');
         overlay.className = 'guida-overlay';
@@ -658,12 +698,25 @@
             skipBtn
         };
     }
+    
+    /**
+     * Pulisce l'elemento precedentemente evidenziato
+     */
+    function clearHighlightedElement() {
+        if (guidaState.highlightedElement) {
+            guidaState.highlightedElement.classList.remove('guida-target-highlight');
+            guidaState.highlightedElement = null;
+        }
+    }
 
     /**
      * Posiziona lo spotlight su un elemento
      */
     function posizionaSpotlight(targetSelector, highlight = true) {
         const spotlight = guidaState.elements.spotlight;
+        
+        // Pulisci elemento precedente
+        clearHighlightedElement();
         
         if (!targetSelector || !highlight) {
             spotlight.classList.remove('active');
@@ -685,6 +738,10 @@
         spotlight.style.width = (rect.width + padding * 2) + 'px';
         spotlight.style.height = (rect.height + padding * 2) + 'px';
         spotlight.classList.add('active', 'pulse');
+        
+        // Aggiungi classe highlight all'elemento target per z-index e bordo
+        target.classList.add('guida-target-highlight');
+        guidaState.highlightedElement = target;
         
         return target;
     }
@@ -817,7 +874,7 @@
         }
         
         return `
-            <button class="guida-close" onclick="TaskFlowGuida.fineGuida(true)" title="Chiudi guida">
+            <button class="guida-close" id="guida-close-btn" title="Chiudi guida">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -885,11 +942,22 @@
             }
         } else {
             guidaState.elements.spotlight.classList.remove('active');
+            clearHighlightedElement();
         }
         
         // Aggiorna tooltip
         const tooltip = guidaState.elements.tooltip;
         tooltip.innerHTML = buildTooltipContent(step, index);
+        
+        // Aggiungi event listener esplicito al bottone di chiusura
+        const closeBtn = document.getElementById('guida-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                fineGuida(true);
+            });
+        }
         
         setTimeout(() => {
             posizionaTooltip(step, targetElement);
@@ -950,6 +1018,18 @@
      * Avvia la guida
      */
     async function avviaGuida(forza = false) {
+        // Verifica se la guida è già attiva per evitare duplicazioni
+        if (guidaState.isActive) {
+            console.log('TaskFlow Guida: Già in esecuzione');
+            return;
+        }
+        
+        // Verifica se esistono già elementi della guida nel DOM
+        if (document.getElementById('guida-overlay')) {
+            console.log('TaskFlow Guida: Elementi già presenti nel DOM, pulizia in corso...');
+            await fineGuida(true);
+        }
+        
         // Verifica se già vista
         if (!forza) {
             const vista = await verificaGuidaVista();
@@ -989,21 +1069,29 @@
      * Termina la guida
      */
     async function fineGuida(saltata = false) {
+        // Se la guida non è attiva, non fare nulla
+        if (!guidaState.isActive && !document.getElementById('guida-overlay')) {
+            return;
+        }
+        
         guidaState.isActive = false;
         guidaState.completed = !saltata;
         
         // Segna come vista se completata o saltata
         await segnaGuidaVista();
         
+        // Pulisci elemento evidenziato
+        clearHighlightedElement();
+        
         // Animazione uscita
         const { overlay, tooltip, spotlight, skipBtn } = guidaState.elements;
         
-        tooltip.classList.remove('active');
-        skipBtn.classList.remove('active');
-        spotlight.classList.remove('active');
+        if (tooltip) tooltip.classList.remove('active');
+        if (skipBtn) skipBtn.classList.remove('active');
+        if (spotlight) spotlight.classList.remove('active');
         
         setTimeout(() => {
-            overlay.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
         }, 200);
         
         setTimeout(() => {
@@ -1018,6 +1106,7 @@
             
             // Reset stato
             guidaState.elements = {};
+            guidaState.highlightedElement = null;
             
             // Mostra toast di completamento
             if (!saltata && typeof showToast === 'function') {
