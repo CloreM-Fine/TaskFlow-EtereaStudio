@@ -538,15 +538,17 @@ CREATE TABLE `utenti` (
   `google_connected` tinyint(1) DEFAULT '0',
   `last_login` timestamp NULL DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `guida_vista` tinyint(1) DEFAULT '0',
+  `guida_data` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dump dei dati per la tabella `utenti`
 --
 
-INSERT INTO `utenti` (`id`, `nome`, `password`, `email`, `wallet_saldo`, `colore`, `avatar`, `google_access_token`, `google_refresh_token`, `google_token_expires`, `google_calendar_id`, `google_connected`, `last_login`, `is_active`, `created_at`) VALUES
-('uxs46wroi3714', 'Lorenzo Ferrarini', 'Lorenzo2026!', NULL, 0.00, '#0891B2', NULL, NULL, NULL, NULL, NULL, 0, NULL, 1, CURRENT_TIMESTAMP);
+INSERT INTO `utenti` (`id`, `nome`, `password`, `email`, `wallet_saldo`, `colore`, `avatar`, `google_access_token`, `google_refresh_token`, `google_token_expires`, `google_calendar_id`, `google_connected`, `last_login`, `is_active`, `created_at`, `guida_vista`, `guida_data`) VALUES
+('uxs46wroi3714', 'Lorenzo Ferrarini', 'Lorenzo2026!', NULL, 0.00, '#0891B2', NULL, NULL, NULL, NULL, NULL, 0, NULL, 1, CURRENT_TIMESTAMP, 0, NULL);
 
 -- --------------------------------------------------------
 

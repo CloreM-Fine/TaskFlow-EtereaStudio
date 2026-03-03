@@ -27,7 +27,7 @@ include __DIR__ . '/includes/header.php';
 ?>
 
 <!-- Resoconto Progetti e Cassa (Accordion) -->
-<div class="mb-6 md:mb-8">
+<div class="mb-6 md:mb-8" data-guida="resoconto">
     <button onclick="toggleResoconto()" class="w-full flex items-center justify-between p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
         <div class="flex items-center gap-2 sm:gap-3">
             <svg class="w-4 h-4 sm:w-5 sm:h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@ include __DIR__ . '/includes/header.php';
         <!-- Stats Row: Scrollabile orizzontalmente su mobile, grid su desktop -->
         <div class="flex md:grid md:grid-cols-2 gap-3 sm:gap-4 overflow-x-auto pb-2 md:pb-0 -mx-2 px-2 md:mx-0 md:px-0">
             <!-- Cassa Aziendale -->
-            <div class="min-w-[140px] md:min-w-0 flex-shrink-0 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg">
+            <div class="min-w-[140px] md:min-w-0 flex-shrink-0 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg" data-guida="cassa">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-emerald-100 text-xs sm:text-sm font-medium mb-1">Cassa Aziendale</p>
@@ -65,7 +65,7 @@ include __DIR__ . '/includes/header.php';
             </div>
             
             <!-- Progetti Attivi -->
-            <div class="min-w-[140px] md:min-w-0 flex-shrink-0 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg">
+            <div class="min-w-[140px] md:min-w-0 flex-shrink-0 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg" data-guida="progetti-stats">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-slate-300 text-xs sm:text-sm font-medium mb-1">Progetti Attivi</p>
@@ -106,7 +106,7 @@ function toggleResoconto() {
 <!-- Row 2: Task e Calendario -->
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mb-6 md:mb-8">
     <!-- Colonna Sinistra: Task -->
-    <div class="space-y-4 sm:space-y-6">
+    <div class="space-y-4 sm:space-y-6" data-guida="task-section">
         <!-- Task di Oggi -->
         <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-3 sm:p-5 border-b border-slate-100 flex items-center justify-between">
@@ -207,7 +207,7 @@ function toggleResoconto() {
     </div>
     
     <!-- Colonna Destra: Calendario Mini -->
-    <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-guida="calendario">
         <div class="p-3 sm:p-5 border-b border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-2 sm:gap-3">
                 <div class="w-8 h-8 sm:w-10 sm:h-10 bg-cyan-100 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
@@ -283,7 +283,7 @@ function toggleResoconto() {
 </div>
 
 <!-- Row 3: Contabilità Mensile -->
-<div id="contabilitaMensileSection" class="mb-6">
+<div id="contabilitaMensileSection" class="mb-6" data-guida="contabilita">
     <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="p-3 sm:p-5 border-b border-slate-100">
             <div class="flex items-center justify-between">
@@ -363,7 +363,7 @@ function toggleResoconto() {
 </div>
 
 <!-- Row 4: Timeline -->
-<div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-guida="timeline">
     <div class="p-3 sm:p-5 border-b border-slate-100">
         <div class="flex items-center gap-2 sm:gap-3">
             <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
@@ -839,5 +839,36 @@ function formatCurrency(value) {
     return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(value);
 }
 </script>
+
+<?php
+// Verifica se mostrare la guida (solo se il campo guidavista esiste ed è 0)
+$mostraGuida = false;
+try {
+    $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $guidavista = $stmt->fetchColumn();
+    $mostraGuida = ($guidavista !== false && $guidavista !== null && (int)$guidavista === 0);
+} catch (PDOException $e) {
+    // Campo non esiste, non mostrare la guida
+    $mostraGuida = false;
+}
+?>
+
+<!-- Script Guida Interattiva -->
+<script src="assets/js/guida.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if ($mostraGuida): ?>
+    // Avvia la guida automaticamente se l'utente non l'ha ancora vista
+    if (typeof GuidaTour !== 'undefined') {
+        GuidaTour.init();
+        setTimeout(() => GuidaTour.start(), 500);
+    }
+    <?php endif; ?>
+});
+</script>
+
+<!-- Guida Interattiva TaskFlow -->
+<script src="assets/js/guida.js?v=1.0.0"></script>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

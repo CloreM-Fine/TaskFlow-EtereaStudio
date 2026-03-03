@@ -454,6 +454,50 @@ include __DIR__ . '/includes/header.php';
         </div>
     </div>
     
+    <!-- Sezione: Guida Introductiva -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-5 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-slate-800">Guida Introductiva</h3>
+                    <p class="text-xs sm:text-sm text-slate-500">Tour interattivo della dashboard</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-5 space-y-4">
+            <div class="p-4 bg-slate-50 rounded-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium text-slate-800">Mostra guida al prossimo login</p>
+                        <p class="text-xs sm:text-sm text-slate-500">Reimposta la guida per visualizzarla di nuovo</p>
+                    </div>
+                    <button onclick="resetGuida()" 
+                            class="px-4 py-2 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 rounded-lg font-medium transition-colors">
+                        Reimposta Guida
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-4 bg-slate-50 rounded-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium text-slate-800">Stato guida attuale</p>
+                        <p class="text-xs sm:text-sm text-slate-500" id="guidaStatusText">Caricamento...</p>
+                    </div>
+                    <span id="guidaStatusBadge" class="px-3 py-1 bg-slate-200 text-slate-600 rounded-full text-xs font-medium">
+                        -
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Sezione: Dati Azienda -->
     <div class="md:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="p-5 border-b border-slate-100">
@@ -1198,6 +1242,57 @@ TERMINI E CONDIZIONI
 
 <script>
 const KEYWORD_SICUREZZA = 'Tomato2399Andromeda2399!?';
+
+// ==================== GUIDA INTRODUCTIVA ====================
+
+// Carica stato guida all'avvio
+document.addEventListener('DOMContentLoaded', function() {
+    caricaStatoGuida();
+});
+
+async function caricaStatoGuida() {
+    try {
+        const response = await fetch('api/guida.php?action=check_guida');
+        const data = await response.json();
+        
+        if (data.success) {
+            const statusText = document.getElementById('guidaStatusText');
+            const statusBadge = document.getElementById('guidaStatusBadge');
+            
+            if (data.data.mostra_guida) {
+                statusText.textContent = 'La guida verrà mostrata al prossimo accesso';
+                statusBadge.textContent = 'Da visualizzare';
+                statusBadge.className = 'px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium';
+            } else {
+                statusText.textContent = 'Hai già visualizzato la guida';
+                statusBadge.textContent = 'Completata';
+                statusBadge.className = 'px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium';
+            }
+        }
+    } catch (error) {
+        console.error('Errore caricamento stato guida:', error);
+        document.getElementById('guidaStatusText').textContent = 'Errore caricamento stato';
+    }
+}
+
+async function resetGuida() {
+    try {
+        const response = await fetch('api/guida.php?action=reset_guida', {
+            method: 'POST'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            showToast(data.message || 'Guida reimpostata con successo', 'success');
+            caricaStatoGuida();
+        } else {
+            showToast(data.message || 'Errore durante il reset', 'error');
+        }
+    } catch (error) {
+        console.error('Errore reset guida:', error);
+        showToast('Errore di connessione', 'error');
+    }
+}
 
 // Elimina Cronologia
 function confirmDeleteCronologia() {
