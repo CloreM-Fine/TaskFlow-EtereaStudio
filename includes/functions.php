@@ -264,13 +264,21 @@ function formatDate(?string $date, string $format = 'd/m/Y'): string {
 function formatDateTime(?string $datetime, string $format = 'd/m/Y H:i'): string {
     if (!$datetime) return '-';
     
-    // Gestione timezone: converte da UTC (database) a Europe/Rome
     try {
-        $dt = new DateTime($datetime, new DateTimeZone('UTC'));
-        $dt->setTimezone(new DateTimeZone('Europe/Rome'));
+        // Se la data non ha timezone, assumiamo sia già in Europe/Rome (database locale)
+        // Se ha 'Z' o offset, convertiamo
+        if (strpos($datetime, 'Z') !== false || preg_match('/[+-]\d{2}:\d{2}$/', $datetime)) {
+            // Ha già un timezone, converti a Europe/Rome
+            $dt = new DateTime($datetime);
+            $dt->setTimezone(new DateTimeZone('Europe/Rome'));
+            return $dt->format($format);
+        }
+        
+        // Nessun timezone specificato, assumiamo sia già locale
+        $dt = new DateTime($datetime);
         return $dt->format($format);
     } catch (Exception $e) {
-        // Fallback alla funzione originale
+        // Fallback
         return date($format, strtotime($datetime));
     }
 }
