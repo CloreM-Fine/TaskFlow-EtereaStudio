@@ -1,0 +1,404 @@
+/**
+ * TaskFlow Onboarding Styles
+ * Design elegante e moderno con animazioni smooth
+ */
+
+/* ============================================
+   RESET E BASE
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   SLIDE TRANSIZIONI
+   ============================================ */
+
+.onboarding-slide {
+    will-change: transform, opacity;
+}
+
+.onboarding-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.onboarding-slide.prev {
+    opacity: 0;
+    transform: translateX(-100%);
+    pointer-events: none;
+}
+
+.onboarding-slide.next {
+    opacity: 0;
+    transform: translateX(100%);
+    pointer-events: none;
+}
+
+/* ============================================
+   INDICATORI DI PROGRESSO
+   ============================================ */
+
+.indicator-dot {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.indicator-dot:hover {
+    transform: scale(1.2);
+}
+
+.indicator-dot.active {
+    width: 32px;
+    background: linear-gradient(135deg, #22D3EE 0%, #0891B2 100%);
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+}
+
+.indicator-dot.active::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    border: 2px solid rgba(34, 211, 238, 0.3);
+    animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ============================================
+   BOTTONI NAVIGAZIONE
+   ============================================ */
+
+#btn-next,
+#btn-prev {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#btn-next:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 30px rgba(8, 145, 178, 0.4);
+}
+
+#btn-next:active {
+    transform: scale(0.95);
+}
+
+#btn-prev:hover {
+    transform: scale(1.1);
+    background: rgba(71, 85, 105, 0.8);
+}
+
+#btn-prev:active {
+    transform: scale(0.95);
+}
+
+/* Bottone Inizia */
+#btn-inizia {
+    position: relative;
+    overflow: hidden;
+}
+
+#btn-inizia::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+#btn-inizia:hover::before {
+    left: 100%;
+}
+
+/* ============================================
+   SCHERMATA CARICAMENTO
+   ============================================ */
+
+#slide-loading.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#rocket {
+    filter: drop-shadow(0 10px 30px rgba(34, 211, 238, 0.3));
+}
+
+#rocket.launching {
+    animation: rocket-launch 5s ease-in-out forwards;
+}
+
+@keyframes rocket-launch {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    15% {
+        transform: translateY(-30px) scale(1.05);
+    }
+    30% {
+        transform: translateY(20px) scale(0.95);
+    }
+    45% {
+        transform: translateY(-50px) scale(1.02);
+    }
+    100% {
+        transform: translateY(-200vh) scale(0.8);
+        opacity: 0;
+    }
+}
+
+#rocket-trail.visible {
+    opacity: 1;
+}
+
+/* Progress Bar Animazione */
+#loading-progress {
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ============================================
+   EFFETTI LUC E GRADIENTI
+   ============================================ */
+
+/* Glow effect per elementi principali */
+.glow-cyan {
+    box-shadow: 0 0 40px rgba(34, 211, 238, 0.3);
+}
+
+.glow-purple {
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
+}
+
+/* Glassmorphism */
+.glass {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   ANIMAZIONI ELEMENTI DECORATIVI
+   ============================================ */
+
+.float-slow {
+    animation: float-slow 4s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(5deg);
+    }
+}
+
+.spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   TOUCH E MOBILE OPTIMIZATIONS
+   ============================================ */
+
+@media (hover: none) {
+    .indicator-dot:hover {
+        transform: none;
+    }
+    
+    #btn-next:hover,
+    #btn-prev:hover {
+        transform: none;
+    }
+    
+    #btn-next:active,
+    #btn-prev:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Prevenire scroll su iOS */
+@supports (-webkit-touch-callout: none) {
+    html, body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    #onboarding-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 640px) {
+    .onboarding-slide h1,
+    .onboarding-slide h2 {
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
+    
+    .onboarding-slide p {
+        font-size: 0.9375rem;
+    }
+    
+    .onboarding-slide .w-40 {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .onboarding-slide .text-7xl {
+        font-size: 3.5rem;
+    }
+    
+    .onboarding-slide .text-8xl {
+        font-size: 4rem;
+    }
+    
+    #onboarding-footer {
+        padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+@media (min-width: 768px) {
+    .onboarding-slide .max-w-md {
+        max-width: 480px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .onboarding-slide .max-w-md {
+        max-width: 520px;
+    }
+    
+    .onboarding-slide h1,
+    .onboarding-slide h2 {
+        font-size: 2.5rem;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus visibile per tastiera */
+button:focus-visible {
+    outline: 2px solid #22D3EE;
+    outline-offset: 2px;
+}
+
+/* ============================================
+   HIDDEN STATES
+   ============================================ */
+
+.hidden-footer {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+/* ============================================
+   PARTICELLE BACKGROUND (Opzionale)
+   ============================================ */
+
+.particles-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float-particle 15s infinite;
+}
+
+@keyframes float-particle {
+    0%, 100% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+    }
+}

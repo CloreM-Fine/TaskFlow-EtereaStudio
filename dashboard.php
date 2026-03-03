@@ -15,6 +15,23 @@ try {
     die('Errore: ' . $e->getMessage());
 }
 
+// Verifica se utente deve vedere l'onboarding
+$userId = $_SESSION['user_id'] ?? '';
+try {
+    $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
+    $stmt->execute([$userId]);
+    $guidavista = $stmt->fetchColumn();
+    
+    // Se guida non vista (0 o null), redirect a onboarding
+    if ($guidavista === false || $guidavista === null || (int)$guidavista === 0) {
+        header('Location: onboarding.php');
+        exit;
+    }
+} catch (PDOException $e) {
+    // In caso di errore, procedi comunque con la dashboard
+    error_log("Errore verifica onboarding: " . $e->getMessage());
+}
+
 $pageTitle = 'Dashboard';
 
 // Ottieni statistiche
@@ -839,36 +856,5 @@ function formatCurrency(value) {
     return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(value);
 }
 </script>
-
-<?php
-// Verifica se mostrare la guida (solo se il campo guidavista esiste ed è 0)
-$mostraGuida = false;
-try {
-    $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
-    $stmt->execute([$_SESSION['user_id']]);
-    $guidavista = $stmt->fetchColumn();
-    $mostraGuida = ($guidavista !== false && $guidavista !== null && (int)$guidavista === 0);
-} catch (PDOException $e) {
-    // Campo non esiste, non mostrare la guida
-    $mostraGuida = false;
-}
-?>
-
-<!-- Script Guida Interattiva -->
-<script src="assets/js/guida.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    <?php if ($mostraGuida): ?>
-    // Avvia la guida automaticamente se l'utente non l'ha ancora vista
-    if (typeof GuidaTour !== 'undefined') {
-        GuidaTour.init();
-        setTimeout(() => GuidaTour.start(), 500);
-    }
-    <?php endif; ?>
-});
-</script>
-
-<!-- Guida Interattiva TaskFlow -->
-<script src="assets/js/guida.js?v=1.0.0"></script>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
