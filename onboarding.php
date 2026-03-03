@@ -10,11 +10,15 @@ require_once __DIR__ . '/includes/auth_check.php';
 $pageTitle = 'Benvenuto';
 
 // Se guida già vista, redirect a dashboard
-$stmt = $pdo->prepare("SELECT guida_vista FROM utenti WHERE id = ?");
-$stmt->execute([$_SESSION['user_id']]);
-if ($stmt->fetchColumn() == 1) {
-    header('Location: dashboard.php');
-    exit;
+try {
+    $stmt = $pdo->prepare("SELECT guida_vista FROM utenti WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    if ($stmt->fetchColumn() == 1) {
+        header('Location: dashboard.php');
+        exit;
+    }
+} catch (Exception $e) {
+    // Se il campo non esiste, continua con l'onboarding
 }
 ?>
 <!DOCTYPE html>
