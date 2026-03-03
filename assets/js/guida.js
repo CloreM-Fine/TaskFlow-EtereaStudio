@@ -77,7 +77,7 @@
             id: 'appuntamenti',
             title: 'Prossimi Appuntamenti 📅',
             content: 'Il calendario mini ti mostra gli appuntamenti imminenti. Clicca sui giorni per vedere gli eventi specifici.',
-            target: '[data-guida="appuntamenti"]'
+            target: '[data-guida="appuntamenti"]',
             position: 'left',
             actionType: 'click',
             highlight: true
@@ -86,7 +86,7 @@
             id: 'timeline',
             title: 'Timeline Attività 📊',
             content: 'Tieni traccia di tutte le azioni recenti nel sistema. La timeline mostra le ultime 10 attività di tutti gli utenti.',
-            target: '[data-guida="timeline"]'
+            target: '[data-guida="timeline"]',
             position: 'top',
             actionType: 'click',
             highlight: true
