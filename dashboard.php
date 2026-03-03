@@ -108,7 +108,7 @@ function toggleResoconto() {
     <!-- Colonna Sinistra: Task -->
     <div class="space-y-4 sm:space-y-6" data-guida="task-section">
         <!-- Task di Oggi -->
-        <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-guida="task-oggi">
             <div class="p-3 sm:p-5 border-b border-slate-100 flex items-center justify-between">
                 <div class="flex items-center gap-2 sm:gap-3">
                     <div class="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
@@ -164,7 +164,7 @@ function toggleResoconto() {
         </div>
         
         <!-- Prossime Scadenze -->
-        <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-guida="scadenze">
             <div class="p-3 sm:p-5 border-b border-slate-100">
                 <div class="flex items-center gap-2 sm:gap-3">
                     <div class="w-8 h-8 sm:w-10 sm:h-10 bg-red-100 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
@@ -207,7 +207,7 @@ function toggleResoconto() {
     </div>
     
     <!-- Colonna Destra: Calendario Mini -->
-    <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-guida="calendario">
+    <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden" data-guida="appuntamenti">
         <div class="p-3 sm:p-5 border-b border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-2 sm:gap-3">
                 <div class="w-8 h-8 sm:w-10 sm:h-10 bg-cyan-100 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">

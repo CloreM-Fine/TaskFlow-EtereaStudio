@@ -32,7 +32,7 @@
             id: 'sidebar',
             title: 'La tua navigazione',
             content: 'Qui trovi tutte le sezioni del gestionale: Dashboard, Progetti, Clienti, Scadenze, Preventivi, Calendario, Finanze, Tasse e Impostazioni.',
-            target: '#sidebar',
+            target: '#sidebar' // sidebar esiste già come ID
             position: 'right',
             actionType: 'auto', // Passa automaticamente dopo 3 secondi o con click
             highlight: true
@@ -41,7 +41,7 @@
             id: 'cassa',
             title: 'Cassa Aziendale 💰',
             content: 'Tieni sempre sotto controllo il saldo della cassa aziendale. Questo importo rappresenta il totale accumulato dalle distribuzioni dei progetti.',
-            target: '#resocontoContent .bg-gradient-to-br.from-emerald-500',
+            target: '[data-guida="cassa"]',
             position: 'bottom',
             actionType: 'click', // L'utente deve cliccare sulla card
             highlight: true
@@ -50,7 +50,7 @@
             id: 'progetti',
             title: 'Progetti Attivi 📁',
             content: 'Visualizza in tempo reale quanti progetti sono attivi e in cui sei coinvolto. Clicca per espandere il resoconto dettagliato.',
-            target: '#resocontoContent .bg-gradient-to-br.from-slate-600',
+            target: '[data-guida="progetti-stats"]',
             position: 'bottom',
             actionType: 'click',
             highlight: true
@@ -59,7 +59,7 @@
             id: 'task-oggi',
             title: 'Task di Oggi ✅',
             content: 'Visualizza e gestisci le task assegnate per oggi. Clicca sul cerchio per segnarle come completate. Resta sempre organizzato!',
-            target: 'main .grid > div:first-child > div:first-child',
+            target: '[data-guida="task-oggi"]'
             position: 'right',
             actionType: 'click',
             highlight: true
@@ -68,7 +68,7 @@
             id: 'scadenze',
             title: 'Prossime Scadenze ⏰',
             content: 'Non perdere mai una deadline! Qui vedi i progetti in scadenza nei prossimi 7 giorni, con indicatore di urgenza.',
-            target: 'main .grid > div:first-child > div:nth-child(2)',
+            target: '[data-guida="scadenze"]'
             position: 'right',
             actionType: 'click',
             highlight: true
@@ -77,7 +77,7 @@
             id: 'appuntamenti',
             title: 'Prossimi Appuntamenti 📅',
             content: 'Il calendario mini ti mostra gli appuntamenti imminenti. Clicca sui giorni per vedere gli eventi specifici.',
-            target: 'main .grid > div:last-child',
+            target: '[data-guida="appuntamenti"]'
             position: 'left',
             actionType: 'click',
             highlight: true
@@ -86,7 +86,7 @@
             id: 'timeline',
             title: 'Timeline Attività 📊',
             content: 'Tieni traccia di tutte le azioni recenti nel sistema. La timeline mostra le ultime 10 attività di tutti gli utenti.',
-            target: 'main > div:last-child',
+            target: '[data-guida="timeline"]'
             position: 'top',
             actionType: 'click',
             highlight: true
@@ -95,7 +95,7 @@
             id: 'profilo',
             title: 'Profilo e Impostazioni ⚙️',
             content: 'Accedi al tuo profilo, alle notifiche e alle impostazioni del sistema dal menu in alto a destra o dalla sidebar.',
-            target: '.dropdown.relative.hidden.lg\\:block',
+            target: '.dropdown' // profilo dropdown
             position: 'bottom',
             actionType: 'click',
             highlight: true
