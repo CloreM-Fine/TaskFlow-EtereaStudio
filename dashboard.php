@@ -857,4 +857,7 @@ function formatCurrency(value) {
 }
 </script>
 
+<!-- Guida Interattiva Dashboard -->
+<script src="assets/js/guida_dashboard.js"></script>
+
 <?php include __DIR__ . '/includes/footer.php'; ?>

@@ -391,12 +391,14 @@ if ($stmt->fetchColumn() == 1) {
             
             // Redirect dopo 5 secondi
             setTimeout(() => {
-                window.location.href = 'dashboard.php';
+                localStorage.setItem('taskflow_guida_da_onboarding', 'true');
+                window.location.href = 'dashboard.php?guida=true';
             }, 5000);
         }
         
         function skipOnboarding() {
-            startApp();
+            localStorage.setItem('taskflow_guida_da_onboarding', 'true');
+            window.location.href = 'dashboard.php?guida=true';
         }
         
         function createStars() {
