@@ -219,7 +219,7 @@ html {
                             <li>• Progetti completati questo mese</li>
                             <li>• Entrate totali del periodo</li>
                             <li>• Task in scadenza</li>
-                            <li>• Performance del team</li>
+                            <li>• Le tue performance</li>
                         </ul>
                     </div>
                     <div class="p-4 bg-slate-50 rounded-xl">
@@ -275,8 +275,9 @@ html {
                         <li><strong>Cliente:</strong> Seleziona dall'anagrafica o crea un nuovo cliente</li>
                         <li><strong>Tipologia:</strong> Sito Web, Branding, Social, ecc.</li>
                         <li><strong>Data scadenza:</strong> Quando il progetto deve essere consegnato</li>
-                        <li><strong>Partecipanti:</strong> Seleziona i membri del team coinvolti</li>
+                        <li><strong>Assegnazione:</strong> Il progetto sarà gestito da te</li>
                         <li><strong>Budget:</strong> Importo totale del progetto</li>
+                        <li><strong>Distribuzione:</strong> 90% al tuo wallet, 10% cassa aziendale</li>
                     </ul>
                     <div class="bg-slate-100 rounded-xl screenshot-placeholder">
                         [Screenshot Creazione Progetto]
@@ -312,7 +313,7 @@ html {
                     <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl">
                         <p class="text-sm text-blue-800">
                             <strong>💡 Tip:</strong> Quando un progetto viene segnato come "Completato", 
-                            il sistema propone automaticamente la distribuzione economica ai partecipanti.
+                            il sistema distribuisce automaticamente il profitto: 90% al tuo wallet e 10% in cassa aziendale.
                         </p>
                     </div>
                 </div>
@@ -322,22 +323,20 @@ html {
                 <div id="distribuzione-economica" class="space-y-4">
                     <h3 class="text-lg font-semibold text-slate-800">Distribuzione economica</h3>
                     <p class="text-slate-600 leading-relaxed">
-                        TaskFlow calcola automaticamente la ripartizione del profitto quando un progetto viene completato. 
-                        La distribuzione avviene in base al numero di partecipanti attivi:
+                        TaskFlow calcola automaticamente la ripartizione del profitto quando un progetto viene completato:
                     </p>
                     <div class="space-y-3">
                         <div class="p-4 bg-slate-50 rounded-xl">
-                            <p class="font-medium text-slate-800 mb-2">👥 3 partecipanti</p>
-                            <p class="text-sm text-slate-600">30% ciascuno + 10% cassa aziendale</p>
+                            <p class="font-medium text-slate-800 mb-2">👤 Sistema mono-utente</p>
+                            <p class="text-sm text-slate-600">90% al tuo wallet personale + 10% cassa aziendale</p>
                         </div>
-                        <div class="p-4 bg-slate-50 rounded-xl">
-                            <p class="font-medium text-slate-800 mb-2">👥 2 partecipanti</p>
-                            <p class="text-sm text-slate-600">40% ciascuno attivo + 10% al terzo membro + 10% cassa</p>
-                        </div>
-                        <div class="p-4 bg-slate-50 rounded-xl">
-                            <p class="font-medium text-slate-800 mb-2">👤 1 partecipante</p>
-                            <p class="text-sm text-slate-600">70% attivo + 10% ciascun altro membro + 10% cassa</p>
-                        </div>
+                    </div>
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                        <p class="text-sm text-emerald-800">
+                            <strong>💡 Nota:</strong> La distribuzione avviene automaticamente al completamento del progetto. 
+                            Il 90% viene accreditato sul tuo wallet personale, mentre il 10% viene destinato alla cassa aziendale 
+                            per spese operative e investimenti.
+                        </p>
                     </div>
                     <div class="bg-slate-100 rounded-xl screenshot-placeholder">
                         [Screenshot Distribuzione Economica]
@@ -431,7 +430,7 @@ html {
                         <li>Vai alla sezione "Task"</li>
                         <li>Clicca su "Nuovo Task"</li>
                         <li>Compila titolo, descrizione e data di scadenza</li>
-                        <li>Assegna il task a un membro del team</li>
+                        <li>Assegna il task a te stesso</li>
                     </ol>
                     <div class="bg-slate-100 rounded-xl screenshot-placeholder">
                         [Screenshot Creazione Task]
@@ -443,8 +442,8 @@ html {
                 <div id="assegnare-task" class="space-y-4">
                     <h3 class="text-lg font-semibold text-slate-800">Assegnare task</h3>
                     <p class="text-slate-600 leading-relaxed">
-                        Ogni task può essere assegnato a uno specifico membro del team. L'assegnatario 
-                        riceverà automaticamente una notifica e potrà visualizzare il task nella propria dashboard.
+                        Ogni task può essere assegnato a te stesso. I task assegnati 
+                        saranno visibili nella tua dashboard e nelle scadenze personali.
                     </p>
                     <div class="p-4 bg-purple-50 border border-purple-200 rounded-xl">
                         <p class="text-sm text-purple-800">
@@ -502,7 +501,7 @@ html {
                             <li>• Clicca su una data o trascina per selezionare l'orario</li>
                             <li>• Inserisci titolo e descrizione</li>
                             <li>• Seleziona il progetto associato (opzionale)</li>
-                            <li>• Invita i partecipanti</li>
+                            <li>• Aggiungi descrizione e dettagli</li>
                         </ul>
                     </div>
                     <div class="p-4 bg-slate-50 rounded-xl">
@@ -630,7 +629,7 @@ html {
                     <p class="text-slate-600 leading-relaxed">
                         La Cassa rappresenta il fondo comune dell'agenzia. Ogni progetto completato 
                         versa automaticamente una quota in cassa (10%). Questi fondi possono essere 
-                        utilizzati per spese condivise, investimenti o distribuite ai membri del team.
+                        utilizzati per spese operative, investimenti e costi aziendali.
                     </p>
                     <div class="bg-slate-100 rounded-xl screenshot-placeholder">
                         [Screenshot Cassa Aziendale]
@@ -642,7 +641,7 @@ html {
                 <div id="wallet-personale" class="space-y-4">
                     <h3 class="text-lg font-semibold text-slate-800">Wallet personale</h3>
                     <p class="text-slate-600 leading-relaxed">
-                        Ogni membro del team ha un wallet personale dove vengono accreditate le quote 
+                        Hai un wallet personale dove vengono accreditate le quote (90%) 
                         dai progetti completati. Dal wallet puoi:
                     </p>
                     <ul class="list-disc list-inside text-slate-600 space-y-2 ml-4">

@@ -33,7 +33,7 @@
             id: 'progetti',
             selector: '#sidebar nav a[href="progetti.php"]',
             title: 'Progetti',
-            description: 'Gestisci tutti i tuoi progetti. Crea nuovi progetti, assegna task ai membri del team, monitora lo stato di avanzamento e archivia i completati.',
+            description: 'Gestisci tutti i tuoi progetti. Crea nuovi progetti, organizza i task, monitora lo stato di avanzamento e archivia i completati.',
             icon: 'folder'
         },
         {
@@ -54,14 +54,14 @@
             id: 'calendario',
             selector: '#sidebar nav a[href="calendario.php"]',
             title: 'Calendario',
-            description: 'Organizza appuntamenti e riunioni. Visualizza le scadenze progetto in formato calendario e sincronizza i tuoi impegni con il team.',
+            description: 'Organizza appuntamenti e riunioni. Visualizza le scadenze progetto in formato calendario e gestisci i tuoi impegni.',
             icon: 'calendar'
         },
         {
             id: 'finanze',
             selector: '#sidebar nav a[href="finanze.php"]',
             title: 'Finanze',
-            description: 'Controlla cassa e wallet. Monitora le entrate e le uscite, visualizza il saldo dei wallet dei membri del team e gestisci i movimenti economici.',
+            description: 'Controlla cassa e wallet. Monitora le entrate e le uscite, visualizza il saldo del tuo wallet e gestisci i movimenti economici.',
             icon: 'dollar'
         },
         {
