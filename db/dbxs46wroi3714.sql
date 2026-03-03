@@ -546,7 +546,7 @@ CREATE TABLE `utenti` (
 --
 
 INSERT INTO `utenti` (`id`, `nome`, `password`, `email`, `wallet_saldo`, `colore`, `avatar`, `google_access_token`, `google_refresh_token`, `google_token_expires`, `google_calendar_id`, `google_connected`, `last_login`, `is_active`, `created_at`) VALUES
-('uxs46wroi3714', 'Lorenzo Ferrarini', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, 0.00, '#0891B2', NULL, NULL, NULL, NULL, NULL, 0, NULL, 1, CURRENT_TIMESTAMP);
+('uxs46wroi3714', 'Lorenzo Ferrarini', 'Lorenzo2026!', NULL, 0.00, '#0891B2', NULL, NULL, NULL, NULL, NULL, 0, NULL, 1, CURRENT_TIMESTAMP);
 
 -- --------------------------------------------------------
 
