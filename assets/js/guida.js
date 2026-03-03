@@ -34,7 +34,16 @@
             content: 'Qui trovi tutte le sezioni del gestionale: Dashboard, Progetti, Clienti, Scadenze, Preventivi, Calendario, Finanze, Tasse e Impostazioni.',
             target: '#sidebar',
             position: 'right',
-            actionType: 'auto', // Passa automaticamente dopo 3 secondi o con click
+            actionType: 'auto',
+            highlight: true
+        },
+        {
+            id: 'resoconto',
+            title: 'Resoconto Progetti e Cassa 📊',
+            content: 'Clicca qui per aprire il resoconto e vedere il saldo della Cassa Aziendale e i Progetti Attivi.',
+            target: '[data-guida="resoconto"]',
+            position: 'bottom',
+            actionType: 'click',
             highlight: true
         },
         {
@@ -43,16 +52,16 @@
             content: 'Tieni sempre sotto controllo il saldo della cassa aziendale. Questo importo rappresenta il totale accumulato dalle distribuzioni dei progetti.',
             target: '[data-guida="cassa"]',
             position: 'bottom',
-            actionType: 'click', // L'utente deve cliccare sulla card
+            actionType: 'auto',
             highlight: true
         },
         {
             id: 'progetti',
             title: 'Progetti Attivi 📁',
-            content: 'Visualizza in tempo reale quanti progetti sono attivi e in cui sei coinvolto. Clicca per espandere il resoconto dettagliato.',
+            content: 'Visualizza in tempo reale quanti progetti sono attivi. Clicca su "Vedi tutti" per accedere alla lista completa.',
             target: '[data-guida="progetti-stats"]',
             position: 'bottom',
-            actionType: 'click',
+            actionType: 'auto',
             highlight: true
         },
         {
