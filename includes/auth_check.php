@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Verifica autenticazione utente - Security Hardened
  * 
  * Da includere in tutte le pagine protette

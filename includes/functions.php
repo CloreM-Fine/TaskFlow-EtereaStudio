@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Funzioni comuni
  */
 
@@ -156,111 +156,32 @@ function pulisciTimeline(): void {
  * Calcola la distribuzione economica di un progetto
  * 
  * @param float $totale Importo totale del progetto
- * @param array $partecipantiIds Array degli ID dei partecipanti attivi
+ * @param array $partecipantiIds Array degli ID dei partecipanti (ora sempre 1 utente)
  * @return array Distribuzione calcolata
  */
 function calcolaDistribuzione(float $totale, array $partecipantiIds, bool $includiCassa = true, bool $includiPassivo = false): array {
-    $count = count($partecipantiIds);
     $distribuzione = [];
     
-    // Tutti gli utenti possibili
-    $tuttiUtenti = ['ucwurog3xr8tf', 'ukl9ipuolsebn', 'u3ghz4f2lnpkx'];
-    
-    // Calcola percentuali disponibili
+    // Calcola percentuali: 90% utente, 10% cassa
     $cassaPercent = $includiCassa ? 0.10 : 0;
-    $basePercent = 1 - $cassaPercent; // 0.90 o 1.00
+    $utentePercent = 1 - $cassaPercent; // 0.90 o 1.00
     
-    $numPassivi = 3 - $count;
-    $percentualePassivi = $includiPassivo ? ($numPassivi * 0.10) : 0;
-    $percentualePerAttivi = $basePercent - $percentualePassivi;
+    // Gestione utente singolo (Lorenzo Ferrarini)
+    if (!empty($partecipantiIds)) {
+        $distribuzione[$partecipantiIds[0]] = [
+            'importo' => round($totale * $utentePercent, 2),
+            'percentuale' => round($utentePercent * 100),
+            'tipo' => 'attivo'
+        ];
+    }
     
-    switch($count) {
-        case 3:
-            // Tutti e 3 attivi: dividi la percentuale disponibile
-            $share = $percentualePerAttivi / 3;
-            foreach($partecipantiIds as $uid) {
-                $distribuzione[$uid] = [
-                    'importo' => round($totale * $share, 2),
-                    'percentuale' => round($share * 100),
-                    'tipo' => 'attivo'
-                ];
-            }
-            if ($includiCassa) {
-                $distribuzione['cassa'] = [
-                    'importo' => round($totale * 0.10, 2),
-                    'percentuale' => 10,
-                    'tipo' => 'cassa'
-                ];
-            }
-            break;
-            
-        case 2:
-            // 2 attivi: dividi la percentuale disponibile
-            $share = $percentualePerAttivi / 2;
-            foreach($partecipantiIds as $uid) {
-                $distribuzione[$uid] = [
-                    'importo' => round($totale * $share, 2),
-                    'percentuale' => round($share * 100),
-                    'tipo' => 'attivo'
-                ];
-            }
-            // Aggiungi passivo solo se richiesto
-            if ($includiPassivo) {
-                $inattivi = array_diff($tuttiUtenti, $partecipantiIds);
-                foreach($inattivi as $uid) {
-                    $distribuzione[$uid] = [
-                        'importo' => round($totale * 0.10, 2),
-                        'percentuale' => 10,
-                        'tipo' => 'passivo'
-                    ];
-                }
-            }
-            if ($includiCassa) {
-                $distribuzione['cassa'] = [
-                    'importo' => round($totale * 0.10, 2),
-                    'percentuale' => 10,
-                    'tipo' => 'cassa'
-                ];
-            }
-            break;
-            
-        case 1:
-            // 1 attivo: prende tutta la percentuale disponibile
-            $share = $percentualePerAttivi;
-            $distribuzione[$partecipantiIds[0]] = [
-                'importo' => round($totale * $share, 2),
-                'percentuale' => round($share * 100),
-                'tipo' => 'attivo'
-            ];
-            // Aggiungi passivi solo se richiesto
-            if ($includiPassivo) {
-                $inattivi = array_diff($tuttiUtenti, $partecipantiIds);
-                foreach($inattivi as $uid) {
-                    $distribuzione[$uid] = [
-                        'importo' => round($totale * 0.10, 2),
-                        'percentuale' => 10,
-                        'tipo' => 'passivo'
-                    ];
-                }
-            }
-            if ($includiCassa) {
-                $distribuzione['cassa'] = [
-                    'importo' => round($totale * 0.10, 2),
-                    'percentuale' => 10,
-                    'tipo' => 'cassa'
-                ];
-            }
-            break;
-            
-        default:
-            // Caso non previsto: tutto in cassa
-            if ($includiCassa) {
-                $distribuzione['cassa'] = [
-                    'importo' => $totale,
-                    'percentuale' => 100,
-                    'tipo' => 'cassa'
-                ];
-            }
+    // Aggiungi cassa aziendale
+    if ($includiCassa) {
+        $distribuzione['cassa'] = [
+            'importo' => round($totale * 0.10, 2),
+            'percentuale' => 10,
+            'tipo' => 'cassa'
+        ];
     }
     
     return $distribuzione;
@@ -295,9 +216,7 @@ function eseguiDistribuzione(string $progettoId, float $totale, array $partecipa
                     (progetto_id, tipo, utente_id, importo, percentuale, descrizione)
                     VALUES (?, 'wallet', ?, ?, ?, ?)
                 ");
-                $descrizione = $dati['tipo'] === 'attivo' 
-                    ? 'Compenso progetto (attivo)' 
-                    : 'Compenso progetto (passivo)';
+                $descrizione = 'Compenso progetto';
                 $stmt->execute([$progettoId, $id, $dati['importo'], $dati['percentuale'], $descrizione]);
                 
                 // Aggiorna saldo wallet

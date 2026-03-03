@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Script pulizia timeline (per cron job)
  * 
  * Uso:

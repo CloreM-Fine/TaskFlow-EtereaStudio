@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Impostazioni di sistema
  */
 
@@ -590,7 +590,7 @@ include __DIR__ . '/includes/header.php';
                         <label class="block text-sm font-medium text-slate-700 mb-1">Ragione Sociale *</label>
                         <input type="text" id="aziendaRagioneSociale" 
                                class="w-full px-4 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
-                               placeholder="es. Eterea Studio SRL">
+                               placeholder="es. TaskFlow SRL">
                     </div>
                     
                     <div class="md:col-span-2">

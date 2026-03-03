@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Finanze
  */
 
@@ -108,15 +108,7 @@ include __DIR__ . '/includes/header.php';
                     </svg>
                 </div>
             </div>
-            <?php if ($isLorenzo): ?>
-            <button onclick="openModalAggiunta('cassa')" 
-                    class="absolute bottom-3 right-3 md:bottom-4 md:right-4 w-7 h-7 md:w-8 md:h-8 bg-white/30 hover:bg-white/50 rounded-full flex items-center justify-center text-white transition-colors" 
-                    title="Aggiungi importo">
-                <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-            </button>
-            <?php endif; ?>
+
         </div>
         
         <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl md:rounded-2xl p-4 md:p-6 text-white shadow-lg">
@@ -155,8 +147,8 @@ include __DIR__ . '/includes/header.php';
     <div class="lg:col-span-1">
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-4 md:p-5 border-b border-slate-100">
-                <h2 class="font-bold text-slate-800">Wallet Team</h2>
-                <p class="text-xs md:text-sm text-slate-500">Crediti individuali</p>
+                <h2 class="font-bold text-slate-800">Il Mio Wallet</h2>
+                <p class="text-xs md:text-sm text-slate-500">I tuoi crediti</p>
             </div>
             
             <div class="divide-y divide-slate-100">
@@ -179,15 +171,7 @@ include __DIR__ . '/includes/header.php';
                             <p class="font-medium text-slate-800 text-sm md:text-base truncate"><?php echo e($w['nome']); ?></p>
                             <p class="text-lg md:text-2xl font-bold text-slate-800"><?php echo formatCurrency($w['wallet_saldo']); ?></p>
                         </div>
-                        <?php if ($isLorenzo): ?>
-                        <button onclick="openModalAggiunta('wallet', '<?php echo $w['id']; ?>', '<?php echo e($w['nome']); ?>')" 
-                                class="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-600 transition-colors flex-shrink-0" 
-                                title="Aggiungi credito a <?php echo e($w['nome']); ?>">
-                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                        </button>
-                        <?php endif; ?>
+
                     </div>
                     <div class="mt-3">
                         <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
@@ -263,114 +247,10 @@ include __DIR__ . '/includes/header.php';
             </div>
         </div>
         
-        <?php if ($isLorenzo): ?>
-        <!-- Transazioni Manuali Recenti -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="p-4 md:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                    <h2 class="font-bold text-slate-800">Transazioni Manuali</h2>
-                    <p class="text-xs md:text-sm text-slate-500">Inserimenti ed eliminazioni recenti</p>
-                </div>
-                <button onclick="caricaTransazioni()" class="text-cyan-600 hover:text-cyan-700 text-xs md:text-sm font-medium flex items-center gap-1 self-start sm:self-auto">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    Aggiorna
-                </button>
-            </div>
-            
-            <div id="transazioniList" class="p-3 md:p-0 max-h-96 overflow-y-auto">
-                <div class="p-8 text-center text-slate-400">
-                    <p>Caricamento...</p>
-                </div>
-            </div>
-        </div>
-        <?php endif; ?>
-        
-        <!-- Grafico distribuzione teorica -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="p-4 md:p-5 border-b border-slate-100">
-                <h2 class="font-bold text-slate-800">Schema Distribuzione Profit Sharing</h2>
-                <p class="text-xs md:text-sm text-slate-500">Come viene suddiviso l'importo in base ai partecipanti</p>
-            </div>
-            
-            <div class="p-4 md:p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                    <!-- 1 Partecipante -->
-                    <div class="p-4 bg-slate-50 rounded-xl">
-                        <h3 class="font-semibold text-slate-800 mb-3 text-center text-sm md:text-base">1 Partecipante</h3>
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between p-2 bg-blue-100 rounded-lg text-blue-800 text-sm md:text-base">
-                                <span class="font-medium">Attivo</span>
-                                <span class="font-bold">70%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-slate-200 rounded-lg text-slate-600 text-xs md:text-sm">
-                                <span>Passivo 1</span>
-                                <span>10%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-slate-200 rounded-lg text-slate-600 text-xs md:text-sm">
-                                <span>Passivo 2</span>
-                                <span>10%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-emerald-100 rounded-lg text-emerald-800 text-sm md:text-base">
-                                <span class="font-medium">Cassa</span>
-                                <span class="font-bold">10%</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 2 Partecipanti -->
-                    <div class="p-4 bg-slate-50 rounded-xl">
-                        <h3 class="font-semibold text-slate-800 mb-3 text-center text-sm md:text-base">2 Partecipanti</h3>
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between p-2 bg-blue-100 rounded-lg text-blue-800 text-sm md:text-base">
-                                <span class="font-medium">Attivo 1</span>
-                                <span class="font-bold">40%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-blue-100 rounded-lg text-blue-800 text-sm md:text-base">
-                                <span class="font-medium">Attivo 2</span>
-                                <span class="font-bold">40%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-slate-200 rounded-lg text-slate-600 text-xs md:text-sm">
-                                <span>Passivo</span>
-                                <span>10%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-emerald-100 rounded-lg text-emerald-800 text-sm md:text-base">
-                                <span class="font-medium">Cassa</span>
-                                <span class="font-bold">10%</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 3 Partecipanti -->
-                    <div class="p-4 bg-slate-50 rounded-xl">
-                        <h3 class="font-semibold text-slate-800 mb-3 text-center text-sm md:text-base">3 Partecipanti</h3>
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between p-2 bg-blue-100 rounded-lg text-blue-800 text-sm md:text-base">
-                                <span class="font-medium">Attivo 1</span>
-                                <span class="font-bold">30%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-blue-100 rounded-lg text-blue-800 text-sm md:text-base">
-                                <span class="font-medium">Attivo 2</span>
-                                <span class="font-bold">30%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-blue-100 rounded-lg text-blue-800 text-sm md:text-base">
-                                <span class="font-medium">Attivo 3</span>
-                                <span class="font-bold">30%</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2 bg-emerald-100 rounded-lg text-emerald-800 text-sm md:text-base">
-                                <span class="font-medium">Cassa</span>
-                                <span class="font-bold">10%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 
-<?php if ($isLorenzo): ?>
 <!-- Modal Aggiunta Importo -->
 <div id="modalAggiunta" class="fixed inset-0 z-[60] hidden">
     <div class="absolute inset-0 bg-black/50" onclick="closeModalAggiunta()"></div>
@@ -637,6 +517,5 @@ document.addEventListener('DOMContentLoaded', function() {
     caricaTransazioni();
 });
 </script>
-<?php endif; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

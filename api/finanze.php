@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * API Finanze - Gestione inserimenti manuali (solo admin)
  */
 

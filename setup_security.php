@@ -1,9 +1,9 @@
 <?php
 /**
- * ETEREA GESTIONALE - Setup Sicurezza Automatico
+ * TASKFLOW - Setup Sicurezza Automatico
  * 
  * Eseguire una volta dopo il deploy, poi eliminare questo file
- * URL: https://gestionale.etereastudio.it/setup_security.php
+ * URL: https://taskflow.it/setup_security.php
  */
 
 // Sblocca IP corrente (permette setup anche dopo tentativi falliti)
@@ -41,7 +41,7 @@ $errors = [];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Sicurezza - Eterea Gestionale</title>
+    <title>Setup Sicurezza - TaskFlow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -107,7 +107,7 @@ $errors = [];
                 // Crea contenuto .env
                 $envContent = <<<ENV
 # =====================================================
-# ETEREA GESTIONALE - CONFIGURAZIONE AMBIENTE
+# TASKFLOW - CONFIGURAZIONE AMBIENTE
 # Generato automaticamente: {date('Y-m-d H:i:s')}
 # =====================================================
 
@@ -135,7 +135,7 @@ OPENAI_API_KEY=
 # CONFIGURAZIONE APPLICAZIONE
 # -----------------------------------------------------
 APP_ENV=production
-BASE_URL=https://gestionale.etereastudio.it
+BASE_URL=https://taskflow.it
 APP_DEBUG=false
 
 # -----------------------------------------------------

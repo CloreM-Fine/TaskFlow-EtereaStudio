@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Header comune
  */
 
@@ -26,7 +26,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title><?php echo e($pageTitle ?? 'Eterea Gestionale'); ?> - Gestionale</title>
+    <title><?php echo e($pageTitle ?? 'TaskFlow'); ?></title>
     
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
@@ -384,7 +384,7 @@ try {
                 </div>
             <?php endif; ?>
             <div class="sidebar-logo-text overflow-hidden">
-                <h1 class="font-bold text-base sm:text-lg leading-tight">Eterea Gestionale</h1>
+                <h1 class="font-bold text-base sm:text-lg leading-tight">TaskFlow</h1>
                 <p class="text-xs text-slate-400">Gestionale</p>
             </div>
         </div>
@@ -524,7 +524,7 @@ try {
             <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <!-- Left: Mobile Menu Button -->
                 <!-- Page Title -->
-                <h2 class="text-base sm:text-lg font-semibold text-slate-800 lg:hidden truncate max-w-[150px]"><?php echo e($pageTitle ?? 'Eterea Gestionale'); ?></h2>
+                <h2 class="text-base sm:text-lg font-semibold text-slate-800 lg:hidden truncate max-w-[150px]"><?php echo e($pageTitle ?? 'TaskFlow'); ?></h2>
                 
                 <!-- Right: Actions -->
                 <div class="flex items-center gap-4 ml-auto">
@@ -763,7 +763,7 @@ try {
     
     <!-- Info versione -->
     <div class="px-4 py-4 text-center">
-        <p class="text-xs text-slate-500">Eterea Gestionale</p>
+        <p class="text-xs text-slate-500">TaskFlow</p>
     </div>
 </div>
 

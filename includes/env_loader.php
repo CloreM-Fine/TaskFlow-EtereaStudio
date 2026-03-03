@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Caricatore Environment - Semplice e leggero
  * 
  * Non richiede librerie esterne, compatibile con PHP 7.4+

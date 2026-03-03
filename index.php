@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Login Page
  */
 
@@ -46,7 +46,7 @@ $csrfToken = generateCsrfTokenSecure();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Eterea Gestionale</title>
+    <title>Login - TaskFlow</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -114,7 +114,7 @@ $csrfToken = generateCsrfTokenSecure();
                     <span class="text-white font-bold text-xl sm:text-2xl">LDE</span>
                 </div>
             <?php endif; ?>
-            <h1 class="text-xl sm:text-2xl font-bold text-slate-800">Eterea Gestionale</h1>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-800">TaskFlow</h1>
             <p class="text-slate-500 mt-1 text-sm sm:text-base">Gestionale Progetti</p>
         </div>
         
@@ -213,7 +213,7 @@ $csrfToken = generateCsrfTokenSecure();
         
         <!-- Footer -->
         <p class="text-center text-slate-400 text-xs sm:text-sm mt-6 sm:mt-8">
-            © <?php echo date('Y'); ?> Eterea Gestionale. Tutti i diritti riservati.
+            © <?php echo date('Y'); ?> TaskFlow. Tutti i diritti riservati.
         </p>
     </div>
     

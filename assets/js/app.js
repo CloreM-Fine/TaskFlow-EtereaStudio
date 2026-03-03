@@ -1,5 +1,5 @@
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Main Application JavaScript
  */
 

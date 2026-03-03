@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Configurazione Database e Ambiente
  * 
  * ISTRUZIONI:
@@ -42,7 +42,7 @@ define('TASSE_PASSWORD_HASH', env('TASSE_PASSWORD_HASH', ''));
 // -----------------------------------------------------
 // CONFIGURAZIONE APPLICAZIONE
 // -----------------------------------------------------
-define('APP_NAME', 'Eterea Gestionale');
+define('APP_NAME', 'TaskFlow');
 define('APP_VERSION', '1.0.0');
 define('APP_ENV', env('APP_ENV', 'production'));
 define('APP_DEBUG', env('APP_DEBUG', false));
@@ -74,9 +74,7 @@ define('ALLOWED_UPLOAD_TYPES', env('ALLOWED_UPLOAD_TYPES', 'application/pdf,imag
 // ID UTENTI FISSI
 // -----------------------------------------------------
 define('USERS', [
-    'ucwurog3xr8tf' => ['nome' => 'Lorenzo Puccetti', 'colore' => '#0891B2'],
-    'ukl9ipuolsebn' => ['nome' => 'Daniele Giuliani', 'colore' => '#10B981'],
-    'u3ghz4f2lnpkx' => ['nome' => 'Edmir Likaj', 'colore' => '#F59E0B']
+    'uxs46wroi3714' => ['nome' => 'Lorenzo Ferrarini', 'colore' => '#0891B2']
 ]);
 
 // -----------------------------------------------------

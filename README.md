@@ -1,4 +1,4 @@
-# Eterea Gestionale
+# TaskFlow
 
 Sistema di gestione aziendale (ERP) per studio creativo.
 
@@ -61,4 +61,4 @@ Il file `includes/config.php` contiene:
 
 ---
 
-**URL:** https://gestionale.etereastudio.it
+**URL:** https://taskflow.it

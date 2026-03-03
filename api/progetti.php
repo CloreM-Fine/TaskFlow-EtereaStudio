@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * API Progetti
  */
 
@@ -530,15 +530,9 @@ function distribuisciProgetto(string $id, bool $includiCassa = true, bool $inclu
         
         $totale = floatval($progetto['prezzo_totale']);
         
-        // Filtra partecipanti esclusi
-        $partecipantiFiltrati = array_diff($partecipanti, $utentiEsclusi);
-        
-        if (empty($partecipantiFiltrati)) {
-            jsonResponse(false, null, 'Nessun partecipante selezionato per la distribuzione');
-        }
-        
-        // Esegui distribuzione (senza quota passiva per esclusi)
-        if (eseguiDistribuzione($id, $totale, array_values($partecipantiFiltrati), $includiCassa, $includiPassivo, $utentiEsclusi)) {
+        // Esegui distribuzione economica
+        // Nota: la logica di esclusione utenti è stata rimossa per sistema single-user
+        if (eseguiDistribuzione($id, $totale, array_values($partecipanti), $includiCassa, $includiPassivo, [])) {
             logTimeline($_SESSION['user_id'], 'distribuito_economia', 'progetto', $id, "Distribuiti €{$totale}");
             jsonResponse(true, null, 'Distribuzione effettuata con successo');
         } else {

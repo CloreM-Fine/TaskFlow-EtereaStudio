@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * API Preventivi
  */
 
@@ -378,13 +378,13 @@ function getDatiAzienda(): array {
         
         // Default se non configurati
         if (empty($dati['ragione_sociale'])) {
-            $dati['ragione_sociale'] = 'Eterea Studio';
+            $dati['ragione_sociale'] = 'TaskFlow';
         }
         
         return $dati;
     } catch (PDOException $e) {
         error_log("Errore get dati azienda: " . $e->getMessage());
-        return ['ragione_sociale' => 'Eterea Studio'];
+        return ['ragione_sociale' => 'TaskFlow'];
     }
 }
 

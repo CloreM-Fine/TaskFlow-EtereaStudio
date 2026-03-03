@@ -1,6 +1,6 @@
 <?php
 /**
- * Eterea Gestionale
+ * TaskFlow
  * Dettaglio Progetto
  */
 
@@ -479,13 +479,8 @@ function switchTab(tabName) {
                         $user = USERS[$userId] ?? null;
                         if (!$user) continue;
                         
-                        // Calcola percentuale
-                        $percentuale = match($countPartecipanti) {
-                            1 => 70,
-                            2 => 40,
-                            3 => 30,
-                            default => 0
-                        };
+                        // Percentuale semplificata: 90% all'utente (o 100% se senza cassa)
+                        $percentuale = 90;
                     ?>
                     <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
                         <?php 
@@ -509,7 +504,7 @@ function switchTab(tabName) {
                     </div>
                     <?php endforeach; ?>
                     
-                    <?php if ($countPartecipanti > 0): ?>
+                    <!-- Cassa Aziendale sempre 10% -->
                     <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-100">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium bg-emerald-500">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -518,11 +513,10 @@ function switchTab(tabName) {
                         </div>
                         <div class="flex-1">
                             <p class="font-medium text-slate-800">Cassa Aziendale</p>
-                            <p class="text-sm text-slate-500">Contributo</p>
+                            <p class="text-sm text-slate-500">Contributo fisso</p>
                         </div>
                         <span class="text-sm font-semibold text-emerald-600">10%</span>
                     </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -915,32 +909,10 @@ function switchTab(tabName) {
                                class="w-5 h-5 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
                         <div class="flex-1">
                             <span class="font-medium text-slate-800">Includi Cassa Aziendale (10%)</span>
-                            <p class="text-xs text-slate-500">Deseleziona per distribuire solo ai membri</p>
+                            <p class="text-xs text-slate-500">Deseleziona per distribuire il 100% all'utente</p>
                         </div>
                         <span class="text-lg">💰</span>
                     </label>
-                </div>
-                
-                <!-- Toggle Quota Passiva -->
-                <div class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" id="includiPassivo" onchange="ricalcolaDistribuzione()"
-                               class="w-5 h-5 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
-                        <div class="flex-1">
-                            <span class="font-medium text-slate-800">Includi quota membri non attivi (10%)</span>
-                            <p class="text-xs text-slate-500">Seleziona per dare il 10% anche ai membri non attivi sul progetto</p>
-                        </div>
-                        <span class="text-lg">👤</span>
-                    </label>
-                </div>
-                
-                <!-- Selezione utenti da escludere -->
-                <div class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <p class="font-medium text-slate-800 mb-2">Membri da includere</p>
-                    <p class="text-xs text-slate-500 mb-3">Deseleziona chi non deve ricevere il compenso</p>
-                    <div id="utentiDistribuzioneList" class="space-y-2">
-                        <!-- Popolato via JS -->
-                    </div>
                 </div>
                 
                 <div id="distribuzionePreview">
@@ -980,20 +952,13 @@ function formatCurrency(val) {
 
 // Variabile globale per memorizzare l'ultima distribuzione calcolata
 let lastDistribuzione = [];
-let lastDistribuzioneConfig = { includiCassa: true, includiPassivo: false, utentiEsclusi: [] };
+let lastDistribuzioneConfig = { includiCassa: true };
 
 function calcolaDistribuzione() {
     const includiCassa = document.getElementById('includiCassa')?.checked ?? true;
-    const includiPassivo = document.getElementById('includiPassivo')?.checked ?? false;
-    const utentiEsclusi = getUtentiEsclusi();
     lastDistribuzioneConfig.includiCassa = includiCassa;
-    lastDistribuzioneConfig.includiPassivo = includiPassivo;
-    lastDistribuzioneConfig.utentiEsclusi = utentiEsclusi;
     
-    // Render lista utenti con checkbox
-    renderUtentiDistribuzioneList();
-    
-    const result = generaDistribuzione(includiCassa, includiPassivo, utentiEsclusi);
+    const result = generaDistribuzione(includiCassa);
     lastDistribuzione = result.distribuzione;
     
     renderDistribuzione(result.distribuzione, result.totale);
@@ -1003,132 +968,45 @@ function calcolaDistribuzione() {
 
 function ricalcolaDistribuzione() {
     const includiCassa = document.getElementById('includiCassa')?.checked ?? true;
-    const includiPassivo = document.getElementById('includiPassivo')?.checked ?? false;
-    const utentiEsclusi = getUtentiEsclusi();
     lastDistribuzioneConfig.includiCassa = includiCassa;
-    lastDistribuzioneConfig.includiPassivo = includiPassivo;
-    lastDistribuzioneConfig.utentiEsclusi = utentiEsclusi;
     
-    const result = generaDistribuzione(includiCassa, includiPassivo, utentiEsclusi);
+    const result = generaDistribuzione(includiCassa);
     lastDistribuzione = result.distribuzione;
     
     renderDistribuzione(result.distribuzione, result.totale);
 }
 
-function getUtentiEsclusi() {
-    const checkboxes = document.querySelectorAll('.utente-distribuzione-checkbox:not([disabled])');
-    const esclusi = [];
-    checkboxes.forEach(cb => {
-        if (!cb.checked) {
-            esclusi.push(cb.value);
-        }
-    });
-    return esclusi;
-}
-
-function renderUtentiDistribuzioneList() {
-    const users = <?php echo json_encode(USERS); ?>;
-    const partecipanti = progettoData.partecipanti || [];
-    
-    // Mostra tutti e 3 gli utenti con checkbox
-    const tuttiUtenti = ['ucwurog3xr8tf', 'ukl9ipuolsebn', 'u3ghz4f2lnpkx'];
-    
-    const container = document.getElementById('utentiDistribuzioneList');
-    if (!container) return;
-    
-    container.innerHTML = tuttiUtenti.map(uid => {
-        const user = users[uid];
-        const isPartecipante = partecipanti.includes(uid);
-        // Solo i partecipanti possono essere selezionati/deselezionati
-        // I non-partecipanti non appaiono nella lista (sono automaticamente esclusi)
-        if (!isPartecipante) return '';
-        
-        return `
-            <label class="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" value="${uid}" checked
-                       onchange="ricalcolaDistribuzione()"
-                       class="utente-distribuzione-checkbox w-5 h-5 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
-                <div class="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-medium" style="background-color: ${user?.colore || '#3B82F6'}">
-                    ${user?.nome?.charAt(0) || '?'}
-                </div>
-                <span class="text-sm text-slate-800">${user?.nome || uid}</span>
-            </label>
-        `;
-    }).join('');
-}
-
-function generaDistribuzione(includiCassa = true, includiPassivo = false, utentiEsclusi = []) {
+function generaDistribuzione(includiCassa = true) {
     const totale = parseFloat(progettoData.prezzo_totale) || 0;
     const partecipanti = progettoData.partecipanti || [];
     
-    // Filtra partecipanti esclusi
-    const partecipantiEffettivi = partecipanti.filter(uid => !utentiEsclusi.includes(uid));
-    const count = partecipantiEffettivi.length;
-    
-    if (count === 0) {
+    if (partecipanti.length === 0) {
         showToast('Nessun partecipante selezionato per la distribuzione', 'error');
         return { distribuzione: [], totale: 0 };
     }
     
     const distribuzione = [];
-    const tuttiUtenti = ['ucwurog3xr8tf', 'ukl9ipuolsebn', 'u3ghz4f2lnpkx'];
     
-    // Calcola percentuali disponibili
-    const cassaPercent = includiCassa ? 0.10 : 0;
-    // Percentuale rimanente dopo la cassa (0.90 o 1.00)
-    const basePercent = 1 - cassaPercent;
+    // Semplificato: un solo utente prende 90% (o 100% se senza cassa)
+    const percentualeUtente = includiCassa ? 90 : 100;
+    const importoUtente = totale * (percentualeUtente / 100);
     
-    // Numero di membri non attivi (passivi)
-    const numPassivi = 3 - count;
+    // Aggiungi l'utente (primo partecipante)
+    distribuzione.push({ 
+        id: partecipanti[0], 
+        importo: importoUtente, 
+        percentuale: percentualeUtente, 
+        tipo: 'attivo' 
+    });
     
-    // Se includiPassivo è true: i passivi prendono il loro 10%, il resto va agli attivi
-    // Se includiPassivo è false: la quota dei passivi viene ridistribuita agli attivi
-    const percentualePassivi = includiPassivo ? (numPassivi * 0.10) : 0;
-    const percentualePerAttivi = basePercent - percentualePassivi;
-    
-    switch(count) {
-        case 3:
-            // 3 partecipanti: dividi la percentuale disponibile
-            const share3 = percentualePerAttivi / 3;
-            partecipantiEffettivi.forEach(uid => {
-                distribuzione.push({ id: uid, importo: totale * share3, percentuale: Math.round(share3 * 100), tipo: 'attivo' });
-            });
-            if (includiCassa) {
-                distribuzione.push({ id: 'cassa', importo: totale * 0.10, percentuale: 10, tipo: 'cassa' });
-            }
-            break;
-        case 2:
-            // 2 attivi: dividi la percentuale disponibile
-            const inattivi = tuttiUtenti.filter(id => !partecipantiEffettivi.includes(id));
-            const share2 = percentualePerAttivi / 2;
-            partecipantiEffettivi.forEach(uid => {
-                distribuzione.push({ id: uid, importo: totale * share2, percentuale: Math.round(share2 * 100), tipo: 'attivo' });
-            });
-            // Passivo solo se includiPassivo è true
-            if (includiPassivo) {
-                inattivi.forEach(uid => {
-                    distribuzione.push({ id: uid, importo: totale * 0.10, percentuale: 10, tipo: 'passivo' });
-                });
-            }
-            if (includiCassa) {
-                distribuzione.push({ id: 'cassa', importo: totale * 0.10, percentuale: 10, tipo: 'cassa' });
-            }
-            break;
-        case 1:
-            // 1 attivo: prende tutta la percentuale disponibile
-            const inattivi2 = tuttiUtenti.filter(id => !partecipantiEffettivi.includes(id));
-            const share1 = percentualePerAttivi;
-            distribuzione.push({ id: partecipantiEffettivi[0], importo: totale * share1, percentuale: Math.round(share1 * 100), tipo: 'attivo' });
-            // Passivi solo se includiPassivo è true
-            if (includiPassivo) {
-                inattivi2.forEach(uid => {
-                    distribuzione.push({ id: uid, importo: totale * 0.10, percentuale: 10, tipo: 'passivo' });
-                });
-            }
-            if (includiCassa) {
-                distribuzione.push({ id: 'cassa', importo: totale * 0.10, percentuale: 10, tipo: 'cassa' });
-            }
-            break;
+    // Aggiungi cassa se richiesto
+    if (includiCassa) {
+        distribuzione.push({ 
+            id: 'cassa', 
+            importo: totale * 0.10, 
+            percentuale: 10, 
+            tipo: 'cassa' 
+        });
     }
     
     return { distribuzione, totale };
@@ -1595,13 +1473,11 @@ async function editTask(taskId) {
 async function confermaDistribuzione() {
     try {
         const includiCassa = lastDistribuzioneConfig.includiCassa ?? true;
-        const includiPassivo = lastDistribuzioneConfig.includiPassivo ?? false;
-        const utentiEsclusi = lastDistribuzioneConfig.utentiEsclusi ?? [];
         
         const response = await fetch('api/progetti.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `action=distribuisci&id=${progettoId}&includi_cassa=${includiCassa ? 1 : 0}&includi_passivo=${includiPassivo ? 1 : 0}&utenti_esclusi=${encodeURIComponent(JSON.stringify(utentiEsclusi))}`
+            body: `action=distribuisci&id=${progettoId}&includi_cassa=${includiCassa ? 1 : 0}`
         });
         
         const data = await response.json();
