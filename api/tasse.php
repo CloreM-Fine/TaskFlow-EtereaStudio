@@ -134,19 +134,18 @@ function verificaPasswordTasse(): void {
     
     $password = $_POST['password'] ?? '';
     
-    // Verifica password contro l'hash dal .env
+    // Verifica password contro l'hash dal .env o in chiaro
     if (defined('TASSE_PASSWORD_HASH') && !empty(TASSE_PASSWORD_HASH)) {
-        // Usa l'hash bcrypt
+        // Verifica hash bcrypt
         if (password_verify($password, TASSE_PASSWORD_HASH)) {
             jsonResponse(true, null, 'Accesso consentito');
             return;
         }
-    }
-    
-    // Fallback per retrocompatibilità (da rimuovere in futuro)
-    if ($password === 'Tomato2399!?') {
-        jsonResponse(true, null, 'Accesso consentito');
-        return;
+        // Verifica password in chiaro (primo accesso, poi verrà hashata)
+        if ($password === TASSE_PASSWORD_HASH) {
+            jsonResponse(true, null, 'Accesso consentito');
+            return;
+        }
     }
     
     securityLog('Tasse wrong password', ['ip' => $_SERVER['REMOTE_ADDR']]);

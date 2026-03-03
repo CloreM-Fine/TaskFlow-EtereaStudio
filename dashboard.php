@@ -42,7 +42,7 @@ include __DIR__ . '/includes/header.php';
     
     <div id="resocontoContent" class="hidden mt-3 sm:mt-4">
         <!-- Stats Row: Scrollabile orizzontalmente su mobile, grid su desktop -->
-        <div class="flex md:grid md:grid-cols-3 gap-3 sm:gap-4 overflow-x-auto pb-2 md:pb-0 -mx-2 px-2 md:mx-0 md:px-0">
+        <div class="flex md:grid md:grid-cols-2 gap-3 sm:gap-4 overflow-x-auto pb-2 md:pb-0 -mx-2 px-2 md:mx-0 md:px-0">
             <!-- Cassa Aziendale -->
             <div class="min-w-[140px] md:min-w-0 flex-shrink-0 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg">
                 <div class="flex items-center justify-between">
@@ -61,27 +61,6 @@ include __DIR__ . '/includes/header.php';
                         <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 8.586 15.293 4.293A1 1 0 0115 4.293V7z" clip-rule="evenodd"/>
                     </svg>
                     Totale accumulato
-                </div>
-            </div>
-            
-            <!-- Miei Crediti -->
-            <div class="min-w-[140px] md:min-w-0 flex-shrink-0 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-white shadow-lg">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-cyan-100 text-xs sm:text-sm font-medium mb-1">I Miei Crediti</p>
-                        <h3 class="text-xl sm:text-2xl md:text-3xl font-bold"><?php echo formatCurrency($stats['miei_crediti']); ?></h3>
-                    </div>
-                    <div class="w-10 h-10 sm:w-14 sm:h-14 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
-                        <svg class="w-5 h-5 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                </div>
-                <div class="mt-3 sm:mt-4 flex items-center text-xs sm:text-sm text-cyan-100">
-                    <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
-                    </svg>
-                    Dal tuo profit sharing
                 </div>
             </div>
             
@@ -126,11 +105,18 @@ function toggleResoconto() {
 
 <?php
 // Recupera dati per il Team Dashboard
-$teamMembers = [
+// Mostra solo l'utente loggato
+$currentUserId = $_SESSION['user_id'] ?? '';
+$allTeamMembers = [
     ['id' => 'ucwurog3xr8tf', 'nome' => 'Lorenzo', 'cognome' => 'Puccetti', 'colore' => '#0891B2'],
     ['id' => 'ukl9ipuolsebn', 'nome' => 'Daniele', 'cognome' => 'Giuliani', 'colore' => '#10B981'],
     ['id' => 'u3ghz4f2lnpkx', 'nome' => 'Edmir', 'cognome' => 'Likaj', 'colore' => '#F59E0B']
 ];
+
+// Filtra solo l'utente loggato
+$teamMembers = array_values(array_filter($allTeamMembers, function($member) use ($currentUserId) {
+    return $member['id'] === $currentUserId;
+}));
 
 // Recupera avatar per ogni membro
 foreach ($teamMembers as &$member) {
@@ -188,7 +174,7 @@ unset($member);
         </svg>
         Team - Progetti e Task
     </h2>
-    <!-- Grid responsive: 1 colonna su mobile, 2 su sm/tablet, 3 su desktop -->
+    <!-- Grid responsive: 1 colonna su mobile, fino a 3 su desktop -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <?php foreach ($teamMembers as $member): ?>
         <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
