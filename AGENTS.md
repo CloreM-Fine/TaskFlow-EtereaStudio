@@ -331,7 +331,6 @@ STATI_PAGAMENTO = [
     'da_pagare_acconto' => 'Da Pagare Acconto',
     'acconto_pagato' => 'Acconto Pagato',
     'da_saldare' => 'Da Saldare',
-    'cat' => 'CAT',
     'pagamento_completato' => 'Pagamento Completato'
 ]
 ```
