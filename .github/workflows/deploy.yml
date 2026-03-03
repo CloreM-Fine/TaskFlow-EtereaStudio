@@ -34,15 +34,9 @@ jobs:
           **/*.sql
           **/db/**
           **/aggiorna_password.php
-          **/.env
-          **/.env.example
-          **/.env.*
           **/assets/temp/**
-          **/assets/uploads/**
-          **/logs/**
           **/.DS_Store
           **/test*.php
           **/check*.php
-          **/cron_*.php
         dangerous-clean-slate: false
         timeout: 600000
