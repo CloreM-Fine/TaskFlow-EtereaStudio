@@ -111,7 +111,7 @@ $csrfToken = generateCsrfTokenSecure();
                 </div>
             <?php else: ?>
                 <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl shadow-xl mb-4">
-                    <span class="text-white font-bold text-xl sm:text-2xl">LDE</span>
+                    <!-- Logo placeholder -->
                 </div>
             <?php endif; ?>
             <h1 class="text-xl sm:text-2xl font-bold text-slate-800">TaskFlow</h1>

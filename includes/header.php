@@ -379,8 +379,8 @@ try {
                          alt="Logo" class="w-full h-full object-contain p-1">
                 </div>
             <?php else: ?>
-                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg flex items-center justify-center font-bold text-xl shadow-lg flex-shrink-0">
-                    LDE
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg flex items-center justify-center shadow-lg flex-shrink-0">
+                    <!-- Logo placeholder -->
                 </div>
             <?php endif; ?>
             <div class="sidebar-logo-text overflow-hidden">
