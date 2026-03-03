@@ -15,22 +15,20 @@ try {
     die('Errore: ' . $e->getMessage());
 }
 
-// Verifica se utente deve vedere l'onboarding
-$userId = $_SESSION['user_id'] ?? '';
-try {
-    $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
-    $stmt->execute([$userId]);
-    $guidavista = $stmt->fetchColumn();
-    
-    // Se guida non vista (0 o null), redirect a onboarding
-    if ($guidavista === false || $guidavista === null || (int)$guidavista === 0) {
-        header('Location: onboarding.php');
-        exit;
-    }
-} catch (PDOException $e) {
-    // In caso di errore, procedi comunque con la dashboard
-    error_log("Errore verifica onboarding: " . $e->getMessage());
-}
+// Verifica se utente deve vedere l'onboarding (solo se parametro guida=true o prima visita)
+// Disabilitato temporaneamente per evitare loop/errore
+// $userId = $_SESSION['user_id'] ?? '';
+// try {
+//     $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
+//     $stmt->execute([$userId]);
+//     $guidavista = $stmt->fetchColumn();
+//     if ($guidavista === false || $guidavista === null || (int)$guidavista === 0) {
+//         header('Location: onboarding.php');
+//         exit;
+//     }
+// } catch (PDOException $e) {
+//     error_log("Errore verifica onboarding: " . $e->getMessage());
+// }
 
 $pageTitle = 'Dashboard';
 
