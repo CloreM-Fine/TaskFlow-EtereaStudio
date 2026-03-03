@@ -59,7 +59,7 @@
             id: 'task-oggi',
             title: 'Task di Oggi ✅',
             content: 'Visualizza e gestisci le task assegnate per oggi. Clicca sul cerchio per segnarle come completate. Resta sempre organizzato!',
-            target: '[data-guida="task-oggi"]'
+            target: '[data-guida="task-oggi"]',
             position: 'right',
             actionType: 'click',
             highlight: true
@@ -68,7 +68,7 @@
             id: 'scadenze',
             title: 'Prossime Scadenze ⏰',
             content: 'Non perdere mai una deadline! Qui vedi i progetti in scadenza nei prossimi 7 giorni, con indicatore di urgenza.',
-            target: '[data-guida="scadenze"]'
+            target: '[data-guida="scadenze"]',
             position: 'right',
             actionType: 'click',
             highlight: true
