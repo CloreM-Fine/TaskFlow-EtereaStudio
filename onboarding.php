@@ -175,18 +175,12 @@ try {
             <!-- Schermata 1: Benvenuto -->
             <div id="slide-1" class="onboarding-slide absolute inset-0 flex flex-col items-center justify-center p-6 transition-all duration-500">
                 <div class="w-full max-w-md mx-auto text-center">
-                    <!-- Immagine/Illustrazione -->
+                    <!-- Immagine -->
                     <div class="relative mb-8">
                         <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-3xl transform scale-150"></div>
-                        <div class="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl animate-scale-in">
-                            <div class="w-40 h-40 mx-auto bg-gradient-to-br from-cyan-400 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg animate-float">
-                                <span class="text-7xl">👋</span>
-                            </div>
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                            <img src="assets/guida/home.png" alt="Dashboard TaskFlow" class="w-full max-w-[280px] mx-auto rounded-2xl">
                         </div>
-                        <!-- Elementi decorativi -->
-                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-yellow-400 rounded-full animate-pulse-slow"></div>
-                        <div class="absolute -bottom-2 -left-6 w-6 h-6 bg-cyan-400 rounded-full animate-pulse-slow" style="animation-delay: 0.5s;"></div>
-                        <div class="absolute top-1/2 -right-8 w-4 h-4 bg-purple-400 rounded-full animate-pulse-slow" style="animation-delay: 1s;"></div>
                     </div>
                     
                     <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 animate-slide-up">
@@ -204,16 +198,12 @@ try {
             <!-- Schermata 2: Progetti -->
             <div id="slide-2" class="onboarding-slide absolute inset-0 flex flex-col items-center justify-center p-6 transition-all duration-500 opacity-0 translate-x-full pointer-events-none">
                 <div class="w-full max-w-md mx-auto text-center">
+                    <!-- Immagine -->
                     <div class="relative mb-8">
                         <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-full blur-3xl transform scale-150"></div>
-                        <div class="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
-                            <div class="w-40 h-40 mx-auto bg-gradient-to-br from-emerald-400 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg animate-float">
-                                <span class="text-7xl">📁</span>
-                            </div>
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                            <img src="assets/guida/nuovo%20progetto.png" alt="Nuovo progetto" class="w-full max-w-[280px] mx-auto rounded-2xl">
                         </div>
-                        <!-- Elementi decorativi -->
-                        <div class="absolute top-0 -left-4 w-8 h-8 bg-emerald-400 rounded-lg rotate-12 animate-pulse-slow"></div>
-                        <div class="absolute -bottom-4 right-0 w-6 h-6 bg-cyan-400 rounded-lg -rotate-12 animate-pulse-slow" style="animation-delay: 0.5s;"></div>
                     </div>
                     
                     <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -228,17 +218,12 @@ try {
             <!-- Schermata 3: Finanze -->
             <div id="slide-3" class="onboarding-slide absolute inset-0 flex flex-col items-center justify-center p-6 transition-all duration-500 opacity-0 translate-x-full pointer-events-none">
                 <div class="w-full max-w-md mx-auto text-center">
+                    <!-- Immagine -->
                     <div class="relative mb-8">
                         <div class="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-rose-500/20 rounded-full blur-3xl transform scale-150"></div>
-                        <div class="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl">
-                            <div class="w-40 h-40 mx-auto bg-gradient-to-br from-amber-400 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg animate-float">
-                                <span class="text-7xl">💰</span>
-                            </div>
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                            <img src="assets/guida/tasse.png" alt="Gestione finanze" class="w-full max-w-[280px] mx-auto rounded-2xl">
                         </div>
-                        <!-- Elementi decorativi -->
-                        <div class="absolute -top-2 right-4 w-8 h-8 bg-amber-400 rounded-full animate-pulse-slow"></div>
-                        <div class="absolute bottom-4 -left-6 w-6 h-6 bg-rose-400 rounded-full animate-pulse-slow" style="animation-delay: 0.5s;"></div>
-                        <div class="absolute top-1/3 -right-6 w-5 h-5 bg-yellow-400 rounded-full animate-pulse-slow" style="animation-delay: 1s;"></div>
                     </div>
                     
                     <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
