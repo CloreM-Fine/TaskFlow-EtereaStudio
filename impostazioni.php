@@ -454,51 +454,53 @@ include __DIR__ . '/includes/header.php';
         </div>
     </div>
     
-    <!-- Sezione: Guida Introductiva -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="p-5 border-b border-slate-100">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+    <!-- Sezione: Guida e Documentazione (affiancate) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Card: Guida Introductiva -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-5 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center">
+                        <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-800">Guida Introductiva</h3>
+                        <p class="text-xs sm:text-sm text-slate-500">Tour interattivo della dashboard</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="font-semibold text-slate-800">Guida Introductiva</h3>
-                    <p class="text-xs sm:text-sm text-slate-500">Tour interattivo della dashboard</p>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-slate-800">Mostra guida al prossimo login</p>
+                            <p class="text-xs sm:text-sm text-slate-500">Reimposta la guida per visualizzarla di nuovo</p>
+                        </div>
+                        <button onclick="resetGuida()" 
+                                class="px-4 py-2 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 rounded-lg font-medium transition-colors">
+                            Reimposta
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-slate-800">Stato guida</p>
+                            <p class="text-xs sm:text-sm text-slate-500" id="guidaStatusText">Caricamento...</p>
+                        </div>
+                        <span id="guidaStatusBadge" class="px-3 py-1 bg-slate-200 text-slate-600 rounded-full text-xs font-medium">
+                            -
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="p-5 space-y-4">
-            <div class="p-4 bg-slate-50 rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-medium text-slate-800">Mostra guida al prossimo login</p>
-                        <p class="text-xs sm:text-sm text-slate-500">Reimposta la guida per visualizzarla di nuovo</p>
-                    </div>
-                    <button onclick="resetGuida()" 
-                            class="px-4 py-2 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 rounded-lg font-medium transition-colors">
-                        Reimposta Guida
-                    </button>
-                </div>
-            </div>
-            
-            <div class="p-4 bg-slate-50 rounded-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-medium text-slate-800">Stato guida attuale</p>
-                        <p class="text-xs sm:text-sm text-slate-500" id="guidaStatusText">Caricamento...</p>
-                    </div>
-                    <span id="guidaStatusBadge" class="px-3 py-1 bg-slate-200 text-slate-600 rounded-full text-xs font-medium">
-                        -
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Sezione: Istruzioni e Sicurezza -->
+        <!-- Card: Istruzioni e Sicurezza -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="p-5 border-b border-slate-100">
             <div class="flex items-center gap-3">
