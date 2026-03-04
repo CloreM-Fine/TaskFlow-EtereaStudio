@@ -59,6 +59,96 @@ html {
     font-weight: 500;
     color: #64748b;
 }
+
+/* Screenshot iframe container */
+.screenshot-container {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.screenshot-iframe {
+    width: 100%;
+    height: 220px;
+    border: none;
+    pointer-events: none;
+    display: block;
+}
+
+.screenshot-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    padding: 2rem 1rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screenshot-overlay span {
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.screenshot-link {
+    display: block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.screenshot-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.screenshot-link:hover .screenshot-overlay {
+    background: linear-gradient(to top, rgba(8, 145, 178, 0.9), transparent);
+}
+
+/* Browser mockup per thumbnail alternativi */
+.browser-mockup {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    background: white;
+}
+
+.browser-header {
+    background: #f1f5f9;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.browser-header::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 14px 0 0 #f59e0b, 28px 0 0 #10b981;
+}
+
+.browser-content {
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
 </style>
 
 <!-- Header con breadcrumb -->
@@ -203,9 +293,14 @@ html {
                     in corso, i progetti attivi, le scadenze imminenti e le statistiche delle tue performance.
                 </p>
                 
-                <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                    [Screenshot Dashboard]
-                </div>
+                <a href="dashboard.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="dashboard.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>📊 Dashboard - Clicca per aprire</span>
+                        </div>
+                    </div>
+                </a>
                 
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="p-4 bg-slate-50 rounded-xl">
@@ -279,9 +374,14 @@ html {
                         <li><strong>Budget:</strong> Importo totale del progetto</li>
                         <li><strong>Distribuzione:</strong> 90% al tuo wallet, 10% cassa aziendale</li>
                     </ul>
-                    <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                        [Screenshot Creazione Progetto]
+                    <a href="progetti.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="progetti.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>📁 Progetti - Clicca per aprire</span>
+                        </div>
                     </div>
+                </a>
                 </div>
                 
                 <hr class="border-slate-200">
@@ -338,9 +438,14 @@ html {
                             per spese operative e investimenti.
                         </p>
                     </div>
-                    <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                        [Screenshot Distribuzione Economica]
+                    <a href="finanze.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="finanze.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>💰 Finanze - Clicca per aprire</span>
+                        </div>
                     </div>
+                </a>
                 </div>
             </div>
         </section>
@@ -375,9 +480,14 @@ html {
                         <li>Dati fiscali (P.IVA, Codice Fiscale, SDI, PEC)</li>
                         <li>Note e informazioni aggiuntive</li>
                     </ul>
-                    <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                        [Screenshot Anagrafica Clienti]
+                    <a href="clienti.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="clienti.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>👥 Clienti - Clicca per aprire</span>
+                        </div>
                     </div>
+                </a>
                 </div>
                 
                 <hr class="border-slate-200">
@@ -432,9 +542,14 @@ html {
                         <li>Compila titolo, descrizione e data di scadenza</li>
                         <li>Assegna il task a te stesso</li>
                     </ol>
-                    <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                        [Screenshot Creazione Task]
+                    <a href="progetti.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="progetti.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>✅ Task - Clicca per aprire progetti</span>
+                        </div>
                     </div>
+                </a>
                 </div>
                 
                 <hr class="border-slate-200">
@@ -462,9 +577,14 @@ html {
                         o apri il task e cambia lo stato. I task completati rimangono visibili 
                         nello storico del progetto.
                     </p>
-                    <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                        [Screenshot Task Completati]
+                    <a href="scadenze.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="scadenze.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>📋 Scadenze - Clicca per aprire</span>
+                        </div>
                     </div>
+                </a>
                 </div>
             </div>
         </section>
@@ -490,9 +610,14 @@ html {
                     Puoi visualizzare gli eventi in modalità mese, settimana o giorno.
                 </p>
                 
-                <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                    [Screenshot Calendario]
-                </div>
+                <a href="calendario.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="calendario.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>📅 Calendario - Clicca per aprire</span>
+                        </div>
+                    </div>
+                </a>
                 
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="p-4 bg-slate-50 rounded-xl">
@@ -538,9 +663,14 @@ html {
                     per non perdere mai una scadenza.
                 </p>
                 
-                <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                    [Screenshot Scadenze]
-                </div>
+                <a href="scadenze.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="scadenze.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>⏰ Scadenze - Clicca per aprire</span>
+                        </div>
+                    </div>
+                </a>
                 
                 <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl">
                     <p class="text-sm text-rose-800">
@@ -572,9 +702,14 @@ html {
                     Compila i servizi, le quantità e i prezzi per generare un PDF pronto da inviare al cliente.
                 </p>
                 
-                <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                    [Screenshot Preventivi]
-                </div>
+                <a href="preventivi.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="preventivi.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>📄 Preventivi - Clicca per aprire</span>
+                        </div>
+                    </div>
+                </a>
                 
                 <div class="space-y-4">
                     <h4 class="font-semibold text-slate-800">Funzionalità principali:</h4>
@@ -631,9 +766,14 @@ html {
                         versa automaticamente una quota in cassa (10%). Questi fondi possono essere 
                         utilizzati per spese operative, investimenti e costi aziendali.
                     </p>
-                    <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                        [Screenshot Cassa Aziendale]
+                    <a href="finanze.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="finanze.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>💳 Cassa Aziendale - Clicca per aprire</span>
+                        </div>
                     </div>
+                </a>
                 </div>
                 
                 <hr class="border-slate-200">
@@ -650,9 +790,14 @@ html {
                         <li>Richiedere un prelievo (registrato manualmente)</li>
                         <li>Monitorare le entrate per progetto</li>
                     </ul>
-                    <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                        [Screenshot Wallet Personale]
+                    <a href="finanze.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="finanze.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>👛 Wallet Personale - Clicca per aprire</span>
+                        </div>
                     </div>
+                </a>
                     <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
                         <p class="text-sm text-emerald-800">
                             <strong>💡 Tip:</strong> Usa la sezione Finanze per tenere traccia 
@@ -685,9 +830,14 @@ html {
                     ai codici ATECO configurati.
                 </p>
                 
-                <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                    [Screenshot Sezione Tasse]
-                </div>
+                <a href="tasse.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="tasse.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>📊 Tasse - Clicca per aprire</span>
+                        </div>
+                    </div>
+                </a>
                 
                 <div class="grid md:grid-cols-3 gap-4">
                     <div class="p-4 bg-slate-50 rounded-xl text-center">
@@ -757,9 +907,14 @@ html {
                     </div>
                 </div>
                 
-                <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                    [Screenshot Impostazioni]
-                </div>
+                <a href="impostazioni.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="impostazioni.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>⚙️ Impostazioni - Clicca per aprire</span>
+                        </div>
+                    </div>
+                </a>
             </div>
         </section>
 
@@ -785,9 +940,14 @@ html {
                     ogni dettaglio di un progetto durante call o riunioni.
                 </p>
                 
-                <div class="bg-slate-100 rounded-xl screenshot-placeholder">
-                    [Screenshot Briefing AI]
-                </div>
+                <a href="briefing_ai.php" target="_blank" class="screenshot-link">
+                    <div class="screenshot-container">
+                        <iframe src="briefing_ai.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <div class="screenshot-overlay">
+                            <span>🎤 Briefing AI - Clicca per aprire</span>
+                        </div>
+                    </div>
+                </a>
                 
                 <div class="space-y-4">
                     <h4 class="font-semibold text-slate-800">Come funziona:</h4>

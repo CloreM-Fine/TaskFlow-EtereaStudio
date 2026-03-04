@@ -2,6 +2,15 @@
 /**
  * TaskFlow - Onboarding Iniziale
  * 4 schermate con design coerente all'app
+ * Best practice UX applicate:
+ * - Massimo 3-4 step
+ * - Progress indicator visibile (numerico + dots)
+ * - Skip sempre disponibile
+ * - CTA chiara alla fine
+ * - Animazioni fluide ma non invasive
+ * - Mobile responsive
+ * - Navigazione avanti/indietro esplicita
+ * - Accessibilità migliorata
  */
 
 require_once __DIR__ . '/includes/functions.php';
@@ -60,6 +69,13 @@ try {
             border-radius: 24px;
             box-shadow: 0 25px 50px -12px rgba(8, 145, 178, 0.25);
             border: 4px solid white;
+        }
+        
+        @media (max-width: 640px) {
+            .slide-image {
+                width: 220px;
+                height: 220px;
+            }
         }
         
         .rocket-container {
@@ -188,6 +204,12 @@ try {
             border-radius: 50%;
             background: #cbd5e1;
             transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .dot:hover {
+            background: #94a3b8;
+            transform: scale(1.2);
         }
         
         .dot.active {
@@ -195,22 +217,134 @@ try {
             width: 24px;
             border-radius: 4px;
         }
+        
+        /* Progress indicator numerico */
+        .progress-indicator {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .progress-indicator span {
+            color: #0891b2;
+        }
+        
+        /* Navigazione avanti/indietro */
+        .nav-button {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 40;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .nav-button:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .nav-button:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .nav-button.prev {
+            left: 24px;
+        }
+        
+        .nav-button.next {
+            right: 24px;
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: translateY(-50%);
+        }
+        
+        .nav-button:disabled:hover {
+            transform: translateY(-50%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 640px) {
+            .nav-button {
+                display: none;
+            }
+            
+            .progress-indicator {
+                top: 16px;
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+        
+        /* Animazione pulse sul CTA finale */
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 24px rgba(8, 145, 178, 0.5);
+            }
+        }
+        
+        .cta-button {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        /* Focus states per accessibilità */
+        button:focus-visible,
+        .nav-button:focus-visible,
+        .dot:focus-visible {
+            outline: 2px solid #0891b2;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body class="overflow-hidden">
 
+    <!-- Progress indicator numerico -->
+    <div class="progress-indicator" id="progressIndicator" aria-label="Progresso onboarding">
+        <span id="currentStepNum">1</span> di 4
+    </div>
+
     <!-- Stelle di sfondo (appare durante lancio) -->
-    <div class="stars" id="stars"></div>
+    <div class="stars" id="stars" aria-hidden="true"></div>
 
     <!-- Container slide -->
-    <div class="slide-container flex" id="slideContainer">
+    <div class="slide-container flex" id="slideContainer" role="region" aria-label="Onboarding TaskFlow">
         
         <!-- Slide 1: Benvenuto -->
-        <div class="slide">
+        <div class="slide" role="group" aria-label="Slide 1 di 4">
             <div class="text-center max-w-md">
                 <div class="mb-8 relative">
                     <div class="absolute inset-0 bg-cyan-400/20 rounded-full blur-3xl transform scale-150"></div>
-                    <img src="assets/guida/home.png" alt="Dashboard" class="slide-image relative">
+                    <img src="assets/guida/home.png" alt="Dashboard TaskFlow" class="slide-image relative" loading="eager">
                 </div>
                 <h1 class="text-3xl font-bold text-slate-800 mb-4">
                     Benvenuto su <span class="text-cyan-600">TaskFlow</span>
@@ -222,11 +356,11 @@ try {
         </div>
 
         <!-- Slide 2: Progetti -->
-        <div class="slide">
+        <div class="slide" role="group" aria-label="Slide 2 di 4">
             <div class="text-center max-w-md">
                 <div class="mb-8 relative">
                     <div class="absolute inset-0 bg-emerald-400/20 rounded-full blur-3xl transform scale-150"></div>
-                    <img src="assets/guida/progetto.png" alt="Nuovo Progetto" class="slide-image relative">
+                    <img src="assets/guida/progetto.png" alt="Gestione progetti" class="slide-image relative" loading="lazy">
                 </div>
                 <h1 class="text-3xl font-bold text-slate-800 mb-4">
                     Gestisci i tuoi <span class="text-emerald-600">Progetti</span>
@@ -238,11 +372,11 @@ try {
         </div>
 
         <!-- Slide 3: Finanze -->
-        <div class="slide">
+        <div class="slide" role="group" aria-label="Slide 3 di 4">
             <div class="text-center max-w-md">
                 <div class="mb-8 relative">
                     <div class="absolute inset-0 bg-amber-400/20 rounded-full blur-3xl transform scale-150"></div>
-                    <img src="assets/guida/tasse.png" alt="Finanze" class="slide-image relative">
+                    <img src="assets/guida/tasse.png" alt="Controllo finanze" class="slide-image relative" loading="lazy">
                 </div>
                 <h1 class="text-3xl font-bold text-slate-800 mb-4">
                     Controlla le <span class="text-amber-600">Finanze</span>
@@ -254,11 +388,11 @@ try {
         </div>
 
         <!-- Slide 4: Pronto -->
-        <div class="slide">
+        <div class="slide" role="group" aria-label="Slide 4 di 4">
             <div class="text-center max-w-md">
                 <div class="mb-8">
                     <div class="w-40 h-40 mx-auto bg-gradient-to-br from-cyan-400 to-purple-500 rounded-3xl flex items-center justify-center shadow-2xl">
-                        <span class="text-6xl">🚀</span>
+                        <span class="text-6xl" role="img" aria-label="Razzo">🚀</span>
                     </div>
                 </div>
                 <h1 class="text-3xl font-bold text-slate-800 mb-4">
@@ -267,7 +401,7 @@ try {
                 <p class="text-slate-600 text-lg mb-8">
                     Inizia a usare TaskFlow e porta il tuo studio al livello successivo.
                 </p>
-                <button onclick="startApp()" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-xl shadow-lg shadow-cyan-600/30 transition-all transform hover:scale-105 active:scale-95">
+                <button onclick="startApp()" class="cta-button px-8 py-4 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-xl shadow-lg transition-all transform hover:scale-105 active:scale-95" aria-label="Inizia ad usare TaskFlow">
                     Inizia ora →
                 </button>
             </div>
@@ -275,29 +409,41 @@ try {
     </div>
 
     <!-- Razzo che parte -->
-    <div class="rocket-container" id="rocket">
+    <div class="rocket-container" id="rocket" aria-hidden="true">
         <div class="rocket">🚀</div>
         <div class="rocket-flame"></div>
     </div>
 
     <!-- Schermata caricamento -->
-    <div class="loading-screen" id="loadingScreen">
+    <div class="loading-screen" id="loadingScreen" role="status" aria-label="Caricamento in corso">
         <h2 class="text-3xl font-bold text-white mb-4">Stiamo preparando tutto!</h2>
-        <div class="progress-bar">
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="loadingProgressBar">
             <div class="progress-fill" id="progressFill"></div>
         </div>
     </div>
 
     <!-- Navigation dots -->
-    <div class="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-40">
-        <button class="dot active" onclick="goToSlide(0)"></button>
-        <button class="dot" onclick="goToSlide(1)"></button>
-        <button class="dot" onclick="goToSlide(2)"></button>
-        <button class="dot" onclick="goToSlide(3)"></button>
-    </div>
+    <nav class="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2 z-40" aria-label="Navigazione slide">
+        <button class="dot active" onclick="goToSlide(0)" aria-label="Vai alla slide 1" aria-current="step"></button>
+        <button class="dot" onclick="goToSlide(1)" aria-label="Vai alla slide 2"></button>
+        <button class="dot" onclick="goToSlide(2)" aria-label="Vai alla slide 3"></button>
+        <button class="dot" onclick="goToSlide(3)" aria-label="Vai alla slide 4"></button>
+    </nav>
+
+    <!-- Navigazione avanti/indietro -->
+    <button class="nav-button prev" id="prevBtn" onclick="prevSlide()" aria-label="Slide precedente" disabled>
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+    </button>
+    <button class="nav-button next" id="nextBtn" onclick="nextSlide()" aria-label="Slide successiva">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+    </button>
 
     <!-- Skip button -->
-    <button onclick="skipOnboarding()" class="fixed top-4 right-4 text-slate-400 hover:text-slate-600 text-sm font-medium z-50 px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors">
+    <button onclick="skipOnboarding()" class="fixed top-4 right-4 text-slate-400 hover:text-slate-600 text-sm font-medium z-50 px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Salta onboarding">
         Salta
     </button>
 
@@ -306,6 +452,9 @@ try {
         const totalSlides = 4;
         const container = document.getElementById('slideContainer');
         const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressIndicator = document.getElementById('currentStepNum');
         
         // Touch/swipe support
         let touchStartX = 0;
@@ -313,12 +462,12 @@ try {
         
         document.addEventListener('touchstart', e => {
             touchStartX = e.changedTouches[0].screenX;
-        });
+        }, { passive: true });
         
         document.addEventListener('touchend', e => {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
-        });
+        }, { passive: true });
         
         function handleSwipe() {
             const diff = touchStartX - touchEndX;
@@ -334,8 +483,36 @@ try {
         function updateSlides() {
             container.style.transform = `translateX(-${currentSlide * 100}vw)`;
             dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
+                const isActive = i === currentSlide;
+                dot.classList.toggle('active', isActive);
+                dot.setAttribute('aria-current', isActive ? 'step' : 'false');
             });
+            
+            // Aggiorna progress indicator
+            progressIndicator.textContent = currentSlide + 1;
+            
+            // Aggiorna stato bottoni navigazione
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            // Aggiorma next button per ultima slide
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.innerHTML = `
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                `;
+                nextBtn.setAttribute('aria-label', 'Completa onboarding');
+                nextBtn.onclick = startApp;
+            } else {
+                nextBtn.innerHTML = `
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                `;
+                nextBtn.setAttribute('aria-label', 'Slide successiva');
+                nextBtn.onclick = nextSlide;
+            }
         }
         
         function nextSlide() {
@@ -353,18 +530,29 @@ try {
         }
         
         function goToSlide(index) {
-            currentSlide = index;
-            updateSlides();
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateSlides();
+            }
         }
         
         // Keyboard navigation
         document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowRight') {
+                if (currentSlide === totalSlides - 1) {
+                    startApp();
+                } else {
+                    nextSlide();
+                }
+            }
             if (e.key === 'ArrowLeft') prevSlide();
             if (e.key === 'Escape') skipOnboarding();
         });
         
         async function startApp() {
+            // Disabilita interazioni durante il caricamento
+            document.body.style.pointerEvents = 'none';
+            
             // Nascondi slide
             container.style.opacity = '0';
             
@@ -380,6 +568,7 @@ try {
             setTimeout(() => {
                 document.getElementById('loadingScreen').classList.add('active');
                 document.getElementById('progressFill').classList.add('animate');
+                document.getElementById('loadingProgressBar').setAttribute('aria-valuenow', '100');
             }, 1000);
             
             // Salva stato guida
@@ -401,6 +590,17 @@ try {
         }
         
         function skipOnboarding() {
+            // Salva stato anche se skippato
+            try {
+                fetch('api/guida.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'action=mark_guida'
+                });
+            } catch (e) {
+                console.log('API non disponibile');
+            }
+            
             localStorage.setItem('taskflow_guida_da_onboarding', 'true');
             window.location.href = 'dashboard.php?guida=true';
         }
@@ -416,6 +616,9 @@ try {
                 starsContainer.appendChild(star);
             }
         }
+        
+        // Inizializza stato bottoni
+        updateSlides();
     </script>
 
 </body>

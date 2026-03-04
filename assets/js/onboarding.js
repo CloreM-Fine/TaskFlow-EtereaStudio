@@ -358,12 +358,16 @@
     // REDIRECT
     // ==========================================
     function redirectToDashboard() {
+        // Imposta flag per attivare la guida dashboard
+        localStorage.setItem('taskflow_mostra_guida', 'true');
+        
         // Effetto fade out
         elements.container.style.transition = 'opacity 0.5s ease';
         elements.container.style.opacity = '0';
 
         setTimeout(() => {
-            window.location.href = 'dashboard.php';
+            // Redirect con parametro per triggerare la guida
+            window.location.href = 'dashboard.php?guida=true';
         }, 500);
     }
 
