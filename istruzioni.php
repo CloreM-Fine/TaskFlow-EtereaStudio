@@ -78,6 +78,14 @@ html {
     display: block;
 }
 
+.screenshot-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+}
+
 .screenshot-overlay {
     position: absolute;
     bottom: 0;
@@ -295,7 +303,7 @@ html {
                 
                 <a href="dashboard.php" target="_blank" class="screenshot-link">
                     <div class="screenshot-container">
-                        <iframe src="dashboard.php" class="screenshot-iframe" scrolling="no"></iframe>
+                        <img src="assets/guida/home.png" alt="Screenshot Dashboard" class="screenshot-image">
                         <div class="screenshot-overlay">
                             <span>📊 Dashboard - Clicca per aprire</span>
                         </div>

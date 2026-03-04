@@ -142,7 +142,8 @@
         // Rimuovi overlay esistente se presente
         removeOverlay();
 
-        // Crea overlay principale
+        // Crea overlay principale - solo per catturare click fuori dal tooltip
+        // NO layer scuro, solo spotlight sull'elemento
         overlayElement = document.createElement('div');
         overlayElement.id = 'guida-overlay';
         overlayElement.style.cssText = `
@@ -152,37 +153,11 @@
             width: 100%;
             height: 100%;
             z-index: 9998;
-            pointer-events: auto;
+            pointer-events: none;
+            background: transparent;
         `;
 
-        // Crea layer scuro con cutout per lo spotlight
-        const darkLayer = document.createElement('div');
-        darkLayer.id = 'guida-dark-layer';
-        darkLayer.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            transition: opacity 0.3s ease;
-        `;
-
-        overlayElement.appendChild(darkLayer);
         document.body.appendChild(overlayElement);
-
-        // Aggiungi handler per chiusura al click fuori
-        clickOutsideHandler = function(e) {
-            // Se il click è sull'overlay (non sul tooltip o spotlight)
-            if (e.target === overlayElement || e.target === darkLayer) {
-                // Chiedi conferma prima di chiudere
-                if (confirm('Vuoi interrompere la guida? Potrai riprenderla più tardi.')) {
-                    saveProgress();
-                    skipGuida();
-                }
-            }
-        };
-        overlayElement.addEventListener('click', clickOutsideHandler);
 
         // Handler per resize
         resizeHandler = debounce(function() {
@@ -263,7 +238,7 @@
             element.style.position = 'relative';
         }
 
-        // Crea elemento spotlight
+        // Crea elemento spotlight - SOLO bordo luminoso, NO overlay scuro
         const spotlight = document.createElement('div');
         spotlight.id = 'guida-spotlight';
         spotlight.style.cssText = `
@@ -275,15 +250,14 @@
             border: 3px solid ${CONFIG.spotlightColor};
             border-radius: ${borderRadius}px;
             box-shadow: 
-                0 0 0 9999px rgba(15, 23, 42, 0.75),
-                0 0 30px ${CONFIG.spotlightColor},
-                0 0 60px rgba(8, 145, 178, 0.3),
-                inset 0 0 20px rgba(8, 145, 178, 0.2);
+                0 0 20px ${CONFIG.spotlightColor},
+                0 0 40px rgba(8, 145, 178, 0.4),
+                inset 0 0 20px rgba(8, 145, 178, 0.1);
             z-index: 9999;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             animation: guidaspotlight-pulse 2s infinite;
-            background: rgba(8, 145, 178, 0.05);
+            background: rgba(8, 145, 178, 0.08);
         `;
 
         // Aggiungi animazione CSS se non esiste
@@ -293,10 +267,10 @@
             style.textContent = `
                 @keyframes guidaspotlight-pulse {
                     0%, 100% { 
-                        box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.85), 0 0 20px ${CONFIG.spotlightColor}, inset 0 0 20px rgba(8, 145, 178, 0.1); 
+                        box-shadow: 0 0 20px ${CONFIG.spotlightColor}, 0 0 40px rgba(8, 145, 178, 0.4), inset 0 0 20px rgba(8, 145, 178, 0.1); 
                     }
                     50% { 
-                        box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.85), 0 0 30px ${CONFIG.spotlightColor}, inset 0 0 30px rgba(8, 145, 178, 0.2); 
+                        box-shadow: 0 0 30px ${CONFIG.spotlightColor}, 0 0 60px rgba(8, 145, 178, 0.6), inset 0 0 30px rgba(8, 145, 178, 0.2); 
                     }
                 }
                 @keyframes guidabounce {
