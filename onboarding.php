@@ -516,7 +516,7 @@ try {
             <div class="text-center max-w-md">
                 <div class="mb-8 relative">
                     <div class="absolute inset-0 bg-cyan-400/20 rounded-full blur-3xl transform scale-150"></div>
-                    <img src="assets/guida/home.png" alt="Dashboard TaskFlow" class="slide-image relative" loading="eager">
+                    <img src="assets/guida/home.png" alt="Dashboard TaskFlow" class="slide-image relative mx-auto" loading="eager">
                 </div>
                 <h1 class="text-3xl font-bold text-slate-800 mb-4">
                     Benvenuto su <span class="text-cyan-600">TaskFlow</span>
@@ -532,7 +532,7 @@ try {
             <div class="text-center max-w-md">
                 <div class="mb-8 relative">
                     <div class="absolute inset-0 bg-emerald-400/20 rounded-full blur-3xl transform scale-150"></div>
-                    <img src="assets/guida/progetto.png" alt="Gestione progetti" class="slide-image relative" loading="lazy">
+                    <img src="assets/guida/progetto.png" alt="Gestione progetti" class="slide-image relative mx-auto" loading="lazy">
                 </div>
                 <h1 class="text-3xl font-bold text-slate-800 mb-4">
                     Gestisci i tuoi <span class="text-emerald-600">Progetti</span>
@@ -548,7 +548,7 @@ try {
             <div class="text-center max-w-md">
                 <div class="mb-8 relative">
                     <div class="absolute inset-0 bg-amber-400/20 rounded-full blur-3xl transform scale-150"></div>
-                    <img src="assets/guida/tasse.png" alt="Controllo finanze" class="slide-image relative" loading="lazy">
+                    <img src="assets/guida/tasse.png" alt="Controllo finanze" class="slide-image relative mx-auto" loading="lazy">
                 </div>
                 <h1 class="text-3xl font-bold text-slate-800 mb-4">
                     Controlla le <span class="text-amber-600">Finanze</span>
@@ -593,7 +593,6 @@ try {
     <!-- Schermata caricamento -->
     <div class="loading-screen" id="loadingScreen" role="status" aria-label="Caricamento in corso">
         <div class="loading-content">
-            <div class="loading-logo">🚀</div>
             <h2 class="loading-title">Stiamo preparando tutto!</h2>
             <p class="loading-subtitle">Configurazione del tuo spazio di lavoro...</p>
             
@@ -753,9 +752,14 @@ try {
             document.getElementById('stars').classList.add('active');
             createStars();
             
-            // Lancia razzo
+            // Nascondi razzo e tutti gli elementi della slide
             const rocket = document.getElementById('rocket');
-            rocket.classList.add('launching');
+            if (rocket) rocket.remove();
+            document.getElementById('progressIndicator').style.display = 'none';
+            document.querySelector('.nav-button.prev').style.display = 'none';
+            document.querySelector('.nav-button.next').style.display = 'none';
+            document.querySelector('nav[aria-label="Navigazione slide"]').style.display = 'none';
+            document.querySelector('button[onclick="skipOnboarding()"]').style.display = 'none';
             
             // Mostra schermata caricamento dopo 1s
             setTimeout(() => {
@@ -791,10 +795,10 @@ try {
             }, 5000);
         }
         
-        function skipOnboarding() {
+        async function skipOnboarding() {
             // Salva stato anche se skippato
             try {
-                fetch('api/guida.php', {
+                await fetch('api/guida.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'action=mark_guida'
@@ -803,8 +807,8 @@ try {
                 console.log('API non disponibile');
             }
             
-            localStorage.setItem('taskflow_guida_da_onboarding', 'true');
-            window.location.href = 'dashboard.php?guida=true';
+            localStorage.setItem('taskflow_mostra_guida', 'true');
+            window.location.href = 'dashboard.php?first=true';
         }
         
         function createStars() {
