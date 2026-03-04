@@ -274,8 +274,9 @@
         // Chiudi dropdown cliccando fuori
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('notificheDropdown');
-            if (dropdown && !dropdown.contains(e.target) && notificheAperte) {
-                document.getElementById('notificheMenu').classList.add('hidden');
+            const menu = document.getElementById('notificheMenu');
+            if (dropdown && menu && !dropdown.contains(e.target) && notificheAperte) {
+                menu.classList.add('hidden');
                 notificheAperte = false;
             }
         });
