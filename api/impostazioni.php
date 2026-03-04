@@ -324,50 +324,55 @@ function uploadAvatar(): void {
  * Salva il logo azienda (base64)
  */
 function saveLogo(): void {
-    $logoData = $_POST['logo'] ?? '';
-    
-    if (empty($logoData)) {
-        jsonResponse(false, null, 'Nessun logo fornito');
+    // Gestisci upload file da FormData
+    if (!isset($_FILES['logo'])) {
+        jsonResponse(false, null, 'Nessun file caricato');
         return;
     }
     
-    // Estrai dati base64
-    if (!preg_match('/^data:image\/(\w+);base64,/', $logoData, $matches)) {
-        jsonResponse(false, null, 'Formato immagine non valido');
+    $file = $_FILES['logo'];
+    
+    // Validazione tipo
+    $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+    if (!in_array($file['type'], $allowedTypes)) {
+        jsonResponse(false, null, 'Formato non valido. Usa JPG, PNG, GIF, WEBP o SVG');
         return;
     }
     
-    $imageType = $matches[1];
-    $imageData = base64_decode(preg_replace('/^data:image\/\w+;base64,/', '', $logoData));
-    
-    if ($imageData === false) {
-        jsonResponse(false, null, 'Errore decodifica immagine');
+    // Validazione dimensione (5MB max)
+    if ($file['size'] > 5 * 1024 * 1024) {
+        jsonResponse(false, null, 'File troppo grande (max 5MB)');
         return;
     }
     
-    // Crea directory
-    $uploadDir = __DIR__ . '/../assets/uploads/';
+    // Crea directory logo
+    $uploadDir = __DIR__ . '/../assets/uploads/logo/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0755, true);
     }
     
-    // Salva file
-    $filename = 'logo_azienda_' . time() . '.' . $imageType;
+    // Nome file univoco
+    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $filename = 'logo_' . time() . '.' . $ext;
     $filepath = $uploadDir . $filename;
     
-    if (file_put_contents($filepath, $imageData)) {
+    if (move_uploaded_file($file['tmp_name'], $filepath)) {
         // Salva path nel database
         global $pdo;
-        $logoUrl = 'assets/uploads/' . $filename;
+        $logoUrl = 'assets/uploads/logo/' . $filename;
+        $isSvg = ($file['type'] === 'image/svg+xml');
         
         $stmt = $pdo->prepare("
             INSERT INTO impostazioni (chiave, valore) 
-            VALUES ('logo_azienda', ?)
+            VALUES ('logo_gestionale', ?)
             ON DUPLICATE KEY UPDATE valore = ?
         ");
         $stmt->execute([$logoUrl, $logoUrl]);
         
-        jsonResponse(true, ['logo_url' => $logoUrl], 'Logo salvato con successo');
+        jsonResponse(true, [
+            'logo' => $logoUrl,
+            'is_svg' => $isSvg
+        ], 'Logo aggiornato con successo');
     } else {
         jsonResponse(false, null, 'Errore durante il salvataggio');
     }
