@@ -27,15 +27,15 @@ CREATE TABLE IF NOT EXISTS task_timer_sessions (
 -- 2. Colonna paga oraria nella tabella utenti
 -- -----------------------------------------------------
 ALTER TABLE utenti 
-ADD COLUMN IF NOT EXISTS paga_oraria DECIMAL(10,2) DEFAULT 0.00 COMMENT 'Tariffa oraria in euro';
+ADD COLUMN paga_oraria DECIMAL(10,2) DEFAULT 0.00 COMMENT 'Tariffa oraria in euro';
 
 -- -----------------------------------------------------
 -- 3. Colonna per tracciare tempo totale nella tabella task
 -- (opzionale, per performance - calcolato da timer_sessions)
 -- -----------------------------------------------------
 ALTER TABLE task 
-ADD COLUMN IF NOT EXISTS tempo_totale_secondi INT DEFAULT 0 COMMENT 'Tempo totale tracciato in secondi',
-ADD COLUMN IF NOT EXISTS costo_stimato DECIMAL(10,2) DEFAULT 0.00 COMMENT 'Costo calcolato in base al tempo';
+ADD COLUMN tempo_totale_secondi INT DEFAULT 0 COMMENT 'Tempo totale tracciato in secondi',
+ADD COLUMN costo_stimato DECIMAL(10,2) DEFAULT 0.00 COMMENT 'Costo calcolato in base al tempo';
 
 -- -----------------------------------------------------
 -- 4. Tabella per storico time tracking (riepilogo giornaliero)
