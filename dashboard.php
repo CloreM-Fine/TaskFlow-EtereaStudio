@@ -18,18 +18,23 @@ try {
 $pageTitle = 'Dashboard';
 
 // Verifica se mostrare onboarding
-$userId = $_SESSION['user_id'] ?? '';
-if ($userId) {
-    // Controlla se l'utente ha già visto l'onboarding
-    $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
-    $stmt->execute([$userId]);
-    $user = $stmt->fetch();
-    
-    if ($user && !$user['guidavista']) {
-        // Reindirizza alla pagina di onboarding
-        header('Location: onboarding.php');
-        exit;
+try {
+    $userId = $_SESSION['user_id'] ?? '';
+    if ($userId) {
+        // Controlla se l'utente ha già visto l'onboarding
+        $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
+        $stmt->execute([$userId]);
+        $user = $stmt->fetch();
+        
+        if ($user && !$user['guidavista']) {
+            // Reindirizza alla pagina di onboarding
+            header('Location: onboarding.php');
+            exit;
+        }
     }
+} catch (Throwable $e) {
+    // Se c'è un errore, continua con la dashboard
+    error_log('Errore check onboarding: ' . $e->getMessage());
 }
 
 // Ottieni statistiche
