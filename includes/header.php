@@ -416,21 +416,21 @@ try {
                     </a>
                 </li>
                 <li>
-                    <a href="progetti.php" 
-                       class="flex items-center gap-3 px-3 py-3 rounded-lg transition-colors <?php echo in_array($currentPage, ['progetti', 'progetto_dettaglio']) ? 'bg-cyan-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'; ?>">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-                        </svg>
-                        <span class="sidebar-text">Progetti</span>
-                    </a>
-                </li>
-                <li>
                     <a href="clienti.php" 
                        class="flex items-center gap-3 px-3 py-3 rounded-lg transition-colors <?php echo $currentPage === 'clienti' ? 'bg-cyan-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'; ?>">
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                         <span class="sidebar-text">Clienti</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="progetti.php" 
+                       class="flex items-center gap-3 px-3 py-3 rounded-lg transition-colors <?php echo in_array($currentPage, ['progetti', 'progetto_dettaglio']) ? 'bg-cyan-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'; ?>">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                        </svg>
+                        <span class="sidebar-text">Progetti</span>
                     </a>
                 </li>
                 <li>
@@ -605,20 +605,20 @@ try {
             <span>Dashboard</span>
         </a>
         
-        <!-- Progetti -->
-        <a href="progetti.php" class="bottom-nav-item <?php echo in_array($currentPage, ['progetti', 'progetto_dettaglio']) ? 'active' : ''; ?>">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-            </svg>
-            <span>Progetti</span>
-        </a>
-        
         <!-- Clienti -->
         <a href="clienti.php" class="bottom-nav-item <?php echo $currentPage === 'clienti' ? 'active' : ''; ?>">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
             </svg>
             <span>Clienti</span>
+        </a>
+        
+        <!-- Progetti -->
+        <a href="progetti.php" class="bottom-nav-item <?php echo in_array($currentPage, ['progetti', 'progetto_dettaglio']) ? 'active' : ''; ?>">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+            <span>Progetti</span>
         </a>
         
         <!-- Calendario -->
@@ -673,20 +673,20 @@ try {
             <span>Dashboard</span>
         </a>
         
-        <!-- Progetti -->
-        <a href="progetti.php" class="mobile-menu-item <?php echo in_array($currentPage, ['progetti', 'progetto_dettaglio']) ? 'active' : ''; ?>">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-            </svg>
-            <span>Progetti</span>
-        </a>
-        
         <!-- Clienti -->
         <a href="clienti.php" class="mobile-menu-item <?php echo $currentPage === 'clienti' ? 'active' : ''; ?>">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             <span>Clienti</span>
+        </a>
+        
+        <!-- Progetti -->
+        <a href="progetti.php" class="mobile-menu-item <?php echo in_array($currentPage, ['progetti', 'progetto_dettaglio']) ? 'active' : ''; ?>">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+            <span>Progetti</span>
         </a>
         
         <!-- Scadenze -->
