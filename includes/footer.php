@@ -5,19 +5,6 @@
     
     <!-- Scripts -->
     <script>
-    // Mobile menu functions
-    function openMobileMenu() {
-        document.getElementById('sidebar').classList.add('open');
-        document.getElementById('mobileOverlay').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closeMobileMenu() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('mobileOverlay').classList.add('hidden');
-        document.body.style.overflow = '';
-    }
-    
     // Modal functions
     function openModal(modalId) {
         const modal = document.getElementById(modalId);
@@ -204,18 +191,6 @@
                 </div>
             </div>
         `}).join('');
-    }
-    
-    function toggleNotifiche() {
-        const menu = document.getElementById('notificheMenu');
-        notificheAperte = !notificheAperte;
-        
-        if (notificheAperte) {
-            menu.classList.remove('hidden');
-            caricaNotifiche();
-        } else {
-            menu.classList.add('hidden');
-        }
     }
     
     async function handleNotificaClick(id, url) {

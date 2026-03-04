@@ -41,7 +41,6 @@
         // Inizializza prima slide
         updateSlide(1);
 
-        console.log('🚀 TaskFlow Onboarding initialized');
     }
 
     function cacheElements() {
@@ -338,17 +337,14 @@
             const data = await response.json();
             
             if (data.success) {
-                console.log('✅ Guida segnata come vista');
                 // Salva anche in localStorage come backup
                 localStorage.setItem('taskflow_guida_vista', '1');
                 localStorage.setItem('taskflow_guida_data', new Date().toISOString());
             } else {
-                console.warn('⚠️ Errore nel salvataggio stato guida:', data.message);
                 // Fallback: salva in localStorage
                 localStorage.setItem('taskflow_guida_vista', '1');
             }
         } catch (error) {
-            console.warn('⚠️ Errore API guida:', error);
             // Fallback: salva in localStorage
             localStorage.setItem('taskflow_guida_vista', '1');
         }

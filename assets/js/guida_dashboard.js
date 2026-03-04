@@ -131,7 +131,6 @@
                 }
             }
         } catch (e) {
-            console.log('Errore caricamento progresso:', e);
         }
         return 0;
     }
@@ -592,7 +591,6 @@
         // Trova elemento target
         const targetElement = document.querySelector(stepData.selector);
         if (!targetElement) {
-            console.warn('Elemento non trovato:', stepData.selector);
             // Passa al prossimo step
             if (stepIndex < GUIDA_STEPS.length - 1) {
                 showStep(stepIndex + 1);
@@ -728,10 +726,9 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Guida marcata come vista:', data);
         })
         .catch(error => {
-            console.error('Errore nel marcare la guida come vista:', error);
+            // Silenzio
         });
     }
 

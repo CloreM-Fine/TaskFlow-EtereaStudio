@@ -52,8 +52,6 @@ function getNotifiche(): void {
             ORDER BY n.data_creazione DESC
             LIMIT 20
         ");
-        // NOTA: Se il campo progetto_id non esiste, eseguire prima la migration
-        // backup/migration_notifiche_progetto_id.sql
         $stmt->execute([$_SESSION['user_id']]);
         $notifiche = $stmt->fetchAll();
         

@@ -565,7 +565,6 @@
             const data = await response.json();
             return data.success && data.data && data.data.guidavista === 1;
         } catch (e) {
-            console.warn('TaskFlow Guida: Impossibile verificare stato guida', e);
             // Fallback: controlla localStorage
             return localStorage.getItem('taskflow_guida_vista') === '1';
         }
@@ -593,7 +592,6 @@
             
             return data.success;
         } catch (e) {
-            console.warn('TaskFlow Guida: Impossibile salvare stato guida', e);
             // Fallback: salva in localStorage
             localStorage.setItem('taskflow_guida_vista', '1');
             localStorage.setItem('taskflow_guida_data', new Date().toISOString());
@@ -623,7 +621,6 @@
             
             return data.success;
         } catch (e) {
-            console.warn('TaskFlow Guida: Impossibile resettare stato guida', e);
             // Fallback: resetta localStorage
             localStorage.removeItem('taskflow_guida_vista');
             localStorage.removeItem('taskflow_guida_data');
@@ -739,7 +736,6 @@
         
         const target = document.querySelector(targetSelector);
         if (!target) {
-            console.warn('TaskFlow Guida: Elemento non trovato', targetSelector);
             spotlight.classList.remove('active');
             return;
         }
@@ -1034,14 +1030,12 @@
     async function avviaGuida(forza = false) {
         // Verifica se la guida è già attiva per evitare duplicazioni
         if (guidaState.isActive) {
-            console.log('TaskFlow Guida: Già in esecuzione');
             return;
         }
         
         // Verifica se esistono già elementi della guida nel DOM (anche multipli)
         const elementiEsistenti = document.querySelectorAll('.guida-overlay, .guida-tooltip');
         if (elementiEsistenti.length > 0) {
-            console.log('TaskFlow Guida: Pulizia elementi esistenti in corso...');
             // Rimuovi TUTTI gli elementi senza animazione
             document.querySelectorAll('.guida-overlay, .guida-spotlight, .guida-tooltip, .guida-skip-btn').forEach(el => el.remove());
             document.body.classList.remove('guida-block-interactions');
@@ -1183,8 +1177,5 @@
         getSteps: () => GUIDA_STEPS,
         version: '1.0.0'
     };
-
-    // Log iniziale
-    console.log('📘 TaskFlow Guida caricata. Usa TaskFlowGuida.avvia() per avviare manualmente.');
 
 })();
