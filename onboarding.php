@@ -108,30 +108,88 @@ try {
         
         .rocket {
             font-size: 80px;
-            filter: drop-shadow(0 10px 20px rgba(8, 145, 178, 0.4));
+            filter: drop-shadow(0 10px 30px rgba(8, 145, 178, 0.5));
+            animation: rocketFloat 2s ease-in-out infinite;
+        }
+        
+        @keyframes rocketFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        
+        .rocket-container.launching .rocket {
+            animation: none;
         }
         
         .rocket-flame {
             position: absolute;
-            bottom: -30px;
+            bottom: -40px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;
-            height: 50px;
-            background: linear-gradient(to bottom, #f59e0b, #ef4444, transparent);
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            width: 40px;
+            height: 60px;
             opacity: 0;
             transition: opacity 0.3s;
         }
         
-        .rocket-container.launching .rocket-flame {
-            opacity: 1;
-            animation: flame 0.2s infinite alternate;
+        .rocket-flame::before,
+        .rocket-flame::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
         }
         
-        @keyframes flame {
-            from { transform: translateX(-50%) scaleY(1); }
-            to { transform: translateX(-50%) scaleY(1.3); }
+        .rocket-flame::before {
+            bottom: 0;
+            width: 30px;
+            height: 50px;
+            background: linear-gradient(to bottom, #fbbf24, #f59e0b, #ef4444, transparent);
+            filter: blur(2px);
+        }
+        
+        .rocket-flame::after {
+            bottom: 5px;
+            width: 20px;
+            height: 35px;
+            background: linear-gradient(to bottom, #fff, #fcd34d, #f59e0b, transparent);
+            filter: blur(1px);
+        }
+        
+        .rocket-container.launching .rocket-flame {
+            opacity: 1;
+            animation: flameFlicker 0.15s infinite alternate;
+        }
+        
+        @keyframes flameFlicker {
+            0% { transform: translateX(-50%) scaleY(1) scaleX(1); }
+            100% { transform: translateX(-50%) scaleY(1.4) scaleX(0.9); }
+        }
+        
+        /* Particelle scintille */
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fbbf24;
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        .rocket-container.launching .spark {
+            animation: sparkFly 0.5s infinite;
+        }
+        
+        @keyframes sparkFly {
+            0% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(60px) scale(0.5); 
+            }
         }
         
         .stars {
@@ -166,36 +224,150 @@ try {
         .loading-screen {
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, #f8fafc 0%, #0891b2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0891b2 100%);
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 50;
+            overflow: hidden;
         }
         
         .loading-screen.active {
             display: flex;
         }
         
+        /* Background animato con stelle che si muovono */
+        .loading-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, white, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, white, transparent),
+                radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(1px 1px at 230px 80px, white, transparent),
+                radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 400px 60px, white, transparent),
+                radial-gradient(2px 2px at 500px 200px, rgba(255,255,255,0.9), transparent);
+            background-size: 550px 250px;
+            animation: starsMove 20s linear infinite;
+            opacity: 0.6;
+        }
+        
+        @keyframes starsMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(-250px); }
+        }
+        
+        .loading-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .loading-logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(8, 145, 178, 0.6));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .loading-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .loading-subtitle {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+        }
+        
+        .loading-pulse {
+            display: inline-flex;
+            gap: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .loading-pulse span {
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #22d3ee, #0891b2);
+            border-radius: 50%;
+            animation: pulse 1.4s ease-in-out infinite both;
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+        }
+        
+        .loading-pulse span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-pulse span:nth-child(2) { animation-delay: -0.16s; }
+        .loading-pulse span:nth-child(3) { animation-delay: 0s; }
+        
+        @keyframes pulse {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .progress-container {
+            width: 280px;
+            max-width: 80vw;
+        }
+        
         .progress-bar {
-            width: 200px;
-            height: 4px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 2px;
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
             overflow: hidden;
-            margin-top: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .progress-fill {
             height: 100%;
-            background: white;
+            background: linear-gradient(90deg, #22d3ee, #0891b2, #06b6d4);
             width: 0%;
-            transition: width 5s linear;
+            transition: width 5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.6);
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 30px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-30px); }
+            100% { transform: translateX(30px); }
         }
         
         .progress-fill.animate {
             width: 100%;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.7);
         }
         
         .dot {
@@ -411,14 +583,35 @@ try {
     <!-- Razzo che parte -->
     <div class="rocket-container" id="rocket" aria-hidden="true">
         <div class="rocket">🚀</div>
-        <div class="rocket-flame"></div>
+        <div class="rocket-flame">
+            <div class="spark" style="left: 10px; animation-delay: 0s;"></div>
+            <div class="spark" style="left: 20px; animation-delay: 0.1s;"></div>
+            <div class="spark" style="left: 30px; animation-delay: 0.2s;"></div>
+        </div>
     </div>
 
     <!-- Schermata caricamento -->
     <div class="loading-screen" id="loadingScreen" role="status" aria-label="Caricamento in corso">
-        <h2 class="text-3xl font-bold text-white mb-4">Stiamo preparando tutto!</h2>
-        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="loadingProgressBar">
-            <div class="progress-fill" id="progressFill"></div>
+        <div class="loading-content">
+            <div class="loading-logo">🚀</div>
+            <h2 class="loading-title">Stiamo preparando tutto!</h2>
+            <p class="loading-subtitle">Configurazione del tuo spazio di lavoro...</p>
+            
+            <div class="loading-pulse">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="loadingProgressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>Caricamento</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -569,6 +762,15 @@ try {
                 document.getElementById('loadingScreen').classList.add('active');
                 document.getElementById('progressFill').classList.add('animate');
                 document.getElementById('loadingProgressBar').setAttribute('aria-valuenow', '100');
+                
+                // Anima la percentuale
+                let percent = 0;
+                const percentEl = document.getElementById('progressPercent');
+                const interval = setInterval(() => {
+                    percent += 2;
+                    if (percentEl) percentEl.textContent = percent + '%';
+                    if (percent >= 100) clearInterval(interval);
+                }, 100);
             }, 1000);
             
             // Salva stato guida
@@ -584,8 +786,8 @@ try {
             
             // Redirect dopo 5 secondi
             setTimeout(() => {
-                localStorage.setItem('taskflow_guida_da_onboarding', 'true');
-                window.location.href = 'dashboard.php?guida=true';
+                localStorage.setItem('taskflow_mostra_guida', 'true');
+                window.location.href = 'dashboard.php?first=true';
             }, 5000);
         }
         
