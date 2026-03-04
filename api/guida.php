@@ -12,7 +12,7 @@ require_once __DIR__ . '/../includes/auth.php';
 requireAuth();
 
 $userId = $_SESSION['user_id'] ?? '';
-$action = $_GET['action'] ?? '';
+$action = $_POST['action'] ?? $_GET['action'] ?? '';
 
 switch ($action) {
     case 'mark_guida':
