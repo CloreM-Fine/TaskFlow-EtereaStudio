@@ -238,7 +238,7 @@
             element.style.position = 'relative';
         }
 
-        // Crea elemento spotlight - SOLO bordo luminoso, NO overlay scuro
+        // Crea elemento spotlight - BORDO EVIDENTE con glow intenso
         const spotlight = document.createElement('div');
         spotlight.id = 'guida-spotlight';
         spotlight.style.cssText = `
@@ -247,17 +247,21 @@
             top: ${rect.top - padding}px;
             width: ${rect.width + (padding * 2)}px;
             height: ${rect.height + (padding * 2)}px;
-            border: 3px solid ${CONFIG.spotlightColor};
+            border: 4px solid ${CONFIG.spotlightColor};
             border-radius: ${borderRadius}px;
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 4px;
             box-shadow: 
+                0 0 0 4px rgba(8, 145, 178, 0.3),
                 0 0 20px ${CONFIG.spotlightColor},
-                0 0 40px rgba(8, 145, 178, 0.4),
-                inset 0 0 20px rgba(8, 145, 178, 0.1);
+                0 0 40px ${CONFIG.spotlightColor},
+                0 0 80px rgba(8, 145, 178, 0.5),
+                inset 0 0 30px rgba(8, 145, 178, 0.15);
             z-index: 9999;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             animation: guidaspotlight-pulse 2s infinite;
-            background: rgba(8, 145, 178, 0.08);
+            background: rgba(8, 145, 178, 0.1);
         `;
 
         // Aggiungi animazione CSS se non esiste
@@ -267,10 +271,20 @@
             style.textContent = `
                 @keyframes guidaspotlight-pulse {
                     0%, 100% { 
-                        box-shadow: 0 0 20px ${CONFIG.spotlightColor}, 0 0 40px rgba(8, 145, 178, 0.4), inset 0 0 20px rgba(8, 145, 178, 0.1); 
+                        box-shadow: 
+                            0 0 0 4px rgba(8, 145, 178, 0.3),
+                            0 0 20px ${CONFIG.spotlightColor},
+                            0 0 40px ${CONFIG.spotlightColor},
+                            0 0 80px rgba(8, 145, 178, 0.5),
+                            inset 0 0 30px rgba(8, 145, 178, 0.15); 
                     }
                     50% { 
-                        box-shadow: 0 0 30px ${CONFIG.spotlightColor}, 0 0 60px rgba(8, 145, 178, 0.6), inset 0 0 30px rgba(8, 145, 178, 0.2); 
+                        box-shadow: 
+                            0 0 0 6px rgba(8, 145, 178, 0.4),
+                            0 0 30px ${CONFIG.spotlightColor},
+                            0 0 60px ${CONFIG.spotlightColor},
+                            0 0 100px rgba(8, 145, 178, 0.7),
+                            inset 0 0 40px rgba(8, 145, 178, 0.25); 
                     }
                 }
                 @keyframes guidabounce {
