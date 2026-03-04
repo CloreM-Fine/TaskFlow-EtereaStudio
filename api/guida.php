@@ -91,9 +91,11 @@ function checkGuidaStatus(string $userId): void {
         $stmt->execute([$userId]);
         $guidavista = $stmt->fetchColumn();
         
+        $daVedere = ($guidavista === false || $guidavista === null || (int)$guidavista === 0);
         jsonResponse(true, [
             'guidavista' => (int)$guidavista,
-            'da_vedere' => ($guidavista === false || $guidavista === null || (int)$guidavista === 0)
+            'da_vedere' => $daVedere,
+            'mostra_guida' => $daVedere
         ]);
     } catch (PDOException $e) {
         error_log("Errore check_guida: " . $e->getMessage());

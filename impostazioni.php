@@ -1360,6 +1360,11 @@ async function resetGuida() {
         const data = await response.json();
         
         if (data.success) {
+            // Pulisci localStorage
+            localStorage.removeItem('taskflow_guida_vista');
+            localStorage.removeItem('taskflow_mostra_guida');
+            localStorage.removeItem('taskflow_guida_progress');
+            
             showToast(data.message || 'Guida reimpostata con successo', 'success');
             caricaStatoGuida();
         } else {
