@@ -85,6 +85,7 @@ define('TIPOLOGIE_PROGETTO', [
     'Grafica',
     'Video',
     'Social Media',
+    'ADS',
     'Branding',
     'SEO',
     'Fotografia',
