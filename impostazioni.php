@@ -456,6 +456,40 @@ include __DIR__ . '/includes/header.php';
     
 </div>
 
+<!-- Riga 1b: Tariffa Oraria -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-6">
+    <div class="p-5 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div>
+                <h3 class="font-semibold text-slate-800">Tariffa Oraria</h3>
+                <p class="text-xs sm:text-sm text-slate-500">Configura il tuo costo orario per il time tracking</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="p-5">
+        <div class="max-w-md">
+            <label class="block text-sm font-medium text-slate-700 mb-2">Paga Oraria (€)</label>
+            <div class="relative">
+                <input type="number" 
+                       id="pagaOrariaInput" 
+                       step="0.01" 
+                       min="0" 
+                       placeholder="0.00"
+                       class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                       onblur="salvaPagaOraria()">
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">€/h</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Questa tariffa verrà utilizzata per calcolare il costo delle task in base al tempo tracciato.</p>
+        </div>
+    </div>
+</div>
+
 <!-- Riga 2: Guida e Istruzioni (affiancate) -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
     
@@ -1372,6 +1406,54 @@ async function resetGuida() {
         }
     } catch (error) {
         console.error('Errore reset guida:', error);
+        showToast('Errore di connessione', 'error');
+    }
+}
+
+// ==================== PAGA ORARIA ====================
+
+// Carica paga oraria all'avvio
+document.addEventListener('DOMContentLoaded', async function() {
+    await caricaPagaOraria();
+});
+
+async function caricaPagaOraria() {
+    try {
+        const response = await fetch('api/user.php?action=get_profile');
+        const data = await response.json();
+        
+        if (data.success && data.data) {
+            const pagaOraria = data.data.paga_oraria || 0;
+            const input = document.getElementById('pagaOrariaInput');
+            if (input) {
+                input.value = pagaOraria > 0 ? pagaOraria.toFixed(2) : '';
+            }
+        }
+    } catch (error) {
+        console.error('Errore caricamento paga oraria:', error);
+    }
+}
+
+async function salvaPagaOraria() {
+    const input = document.getElementById('pagaOrariaInput');
+    const valore = parseFloat(input.value) || 0;
+    
+    try {
+        const response = await fetch('api/user.php?action=update_paga_oraria', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'paga_oraria=' + encodeURIComponent(valore)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showToast('Tariffa oraria salvata', 'success');
+        } else {
+            showToast(data.message || 'Errore salvataggio', 'error');
+        }
+    } catch (error) {
+        console.error('Errore salvataggio paga oraria:', error);
         showToast('Errore di connessione', 'error');
     }
 }

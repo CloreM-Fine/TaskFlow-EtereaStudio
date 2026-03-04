@@ -245,6 +245,7 @@ html {
                             <li><a href="#creare-task" class="sidebar-link block px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-700">Creare task</a></li>
                             <li><a href="#assegnare-task" class="sidebar-link block px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-700">Assegnare task</a></li>
                             <li><a href="#completare-task" class="sidebar-link block px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-700">Completare task</a></li>
+                            <li><a href="#time-tracking" class="sidebar-link block px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-slate-700">⏱️ Time Tracking</a></li>
                         </ul>
                     </li>
                     <li><a href="#calendario" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-600 hover:text-slate-800">Calendario</a></li>
@@ -593,6 +594,50 @@ html {
                         </div>
                     </div>
                 </a>
+                </div>
+                
+                <hr class="border-slate-200">
+                
+                <div id="time-tracking" class="space-y-4">
+                    <h3 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Time Tracking
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Ogni task ha un timer integrato per tracciare il tempo speso. 
+                        Avvia il timer quando inizi a lavorare, mettilo in pausa se ti interrompi, 
+                        e fermalo quando hai finito.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3">⏱️ Come funziona</h4>
+                            <ul class="text-sm text-slate-600 space-y-2">
+                                <li>• <strong>Play</strong> - Avvia il timer</li>
+                                <li>• <strong>Pausa</strong> - Metti in pausa (puoi riprendere)</li>
+                                <li>• <strong>Stop</strong> - Ferma e salva il tempo</li>
+                                <li>• Il tempo viene calcolato automaticamente</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl">
+                            <h4 class="font-semibold text-slate-800 mb-3">💰 Calcolo costo</h4>
+                            <ul class="text-sm text-slate-600 space-y-2">
+                                <li>• Imposta la tua <strong>paga oraria</strong> in Impostazioni</li>
+                                <li>• Al completamento, il costo viene calcolato automaticamente</li>
+                                <li>• Visualizza il totale tempo e il costo stimato</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                        <p class="text-sm text-emerald-800">
+                            <strong>💡 Tip:</strong> Quando completi una task con il timer attivo, 
+                            il tempo tracciato e il costo calcolato vengono salvati automaticamente 
+                            e mostrati nella task completata.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>

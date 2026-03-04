@@ -1076,11 +1076,51 @@ async function loadTask() {
             
             const hasExpandableContent = hasDescrizione || t.assegnati_list?.length > 0 || t.scadenza;
             
+            // Timer data
+            const hasTimer = t.tempo_totale_secondi > 0;
+            const timerDisplay = hasTimer ? formatDuration(t.tempo_totale_secondi) : '00:00:00';
+            const costDisplay = t.costo_stimato > 0 ? '€' + parseFloat(t.costo_stimato).toFixed(2) : '';
+            
             return `
-                <div class="bg-white rounded-xl p-4 mb-3 shadow-sm border border-slate-100 sm:bg-slate-50 sm:rounded-xl sm:shadow-none sm:border-0" style="${taskBorderColor};${taskBgColor}" id="task-${t.id}">
+                <div class="bg-white rounded-xl p-4 mb-3 shadow-sm border border-slate-100 sm:bg-slate-50 sm:rounded-xl sm:shadow-none sm:border-0" style="${taskBorderColor};${taskBgColor}" id="task-${t.id}" data-task-id="${t.id}">
                     <!-- Commenti (nuvolette) - caricati dinamicamente -->
                     <div class="task-commenti-container mb-3" id="commenti-container-${t.id}">
                         <!-- Caricamento... -->
+                    </div>
+                    
+                    <!-- Timer Section -->
+                    <div class="task-timer-section mb-3 p-3 bg-slate-100 rounded-lg" id="timer-section-${t.id}">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="timer-display font-mono text-lg font-semibold text-slate-700" id="timer-display-${t.id}">
+                                    ${t.stato === 'completato' && hasTimer ? timerDisplay : '00:00:00'}
+                                </div>
+                                ${t.stato === 'completato' && costDisplay ? `
+                                    <span class="text-emerald-600 font-semibold text-sm bg-emerald-100 px-2 py-1 rounded">${costDisplay}</span>
+                                ` : ''}
+                            </div>
+                            
+                            ${t.stato !== 'completato' ? `
+                                <div class="flex items-center gap-2">
+                                    <button onclick="startTaskTimer('${t.id}')" id="timer-play-${t.id}" class="w-9 h-9 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                    </button>
+                                    <button onclick="pauseTaskTimer('${t.id}')" id="timer-pause-${t.id}" class="w-9 h-9 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center transition-colors hidden">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                                    </button>
+                                    <button onclick="stopTaskTimer('${t.id}')" id="timer-stop-${t.id}" class="w-9 h-9 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors hidden">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+                                    </button>
+                                </div>
+                            ` : `
+                                ${hasTimer ? `
+                                    <div class="text-xs text-slate-500">
+                                        <span class="block">⏱️ Tempo tracciato</span>
+                                        ${costDisplay ? `<span class="text-emerald-600">💰 ${costDisplay}</span>` : ''}
+                                    </div>
+                                ` : ''}
+                            `}
+                        </div>
                     </div>
                     
                     <!-- Mobile Card Layout -->
@@ -2189,6 +2229,161 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// ==================== TASK TIMER ====================
+
+// Store active timers
+const activeTimers = new Map();
+
+function formatDuration(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+async function startTaskTimer(taskId) {
+    try {
+        const response = await fetch('api/task_timer.php?action=start', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'task_id=' + encodeURIComponent(taskId)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Update UI
+            document.getElementById(`timer-play-${taskId}`).classList.add('hidden');
+            document.getElementById(`timer-pause-${taskId}`).classList.remove('hidden');
+            document.getElementById(`timer-stop-${taskId}`).classList.remove('hidden');
+            
+            // Start local timer interval
+            let seconds = 0;
+            const intervalId = setInterval(() => {
+                seconds++;
+                const display = document.getElementById(`timer-display-${taskId}`);
+                if (display) display.textContent = formatDuration(seconds);
+            }, 1000);
+            
+            activeTimers.set(taskId, {
+                sessionId: data.data.session_id,
+                intervalId: intervalId,
+                startTime: Date.now()
+            });
+            
+            showToast('Timer avviato', 'success');
+        } else {
+            showToast(data.message || 'Errore avvio timer', 'error');
+        }
+    } catch (error) {
+        showToast('Errore di connessione', 'error');
+    }
+}
+
+async function pauseTaskTimer(taskId) {
+    const timer = activeTimers.get(taskId);
+    if (!timer) return;
+    
+    try {
+        const response = await fetch('api/task_timer.php?action=pause', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'session_id=' + encodeURIComponent(timer.sessionId)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Clear interval
+            clearInterval(timer.intervalId);
+            
+            // Update UI
+            document.getElementById(`timer-pause-${taskId}`).classList.add('hidden');
+            document.getElementById(`timer-play-${taskId}`).classList.remove('hidden');
+            
+            // Update display with server time
+            const display = document.getElementById(`timer-display-${taskId}`);
+            if (display) display.textContent = data.data.formatted_time;
+            
+            showToast('Timer in pausa', 'success');
+        } else {
+            showToast(data.message || 'Errore pausa timer', 'error');
+        }
+    } catch (error) {
+        showToast('Errore di connessione', 'error');
+    }
+}
+
+async function stopTaskTimer(taskId) {
+    const timer = activeTimers.get(taskId);
+    if (!timer) return;
+    
+    try {
+        const response = await fetch('api/task_timer.php?action=stop', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'session_id=' + encodeURIComponent(timer.sessionId)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Clear interval
+            clearInterval(timer.intervalId);
+            activeTimers.delete(taskId);
+            
+            // Reload task to show final time and cost
+            loadTask();
+            
+            showToast(`Timer fermato. Tempo: ${data.data.formatted_time} | Costo: €${data.data.calculated_cost}`, 'success');
+        } else {
+            showToast(data.message || 'Errore stop timer', 'error');
+        }
+    } catch (error) {
+        showToast('Errore di connessione', 'error');
+    }
+}
+
+// Check for active timer on page load
+async function checkActiveTimer() {
+    try {
+        const response = await fetch('api/task_timer.php?action=status');
+        const data = await response.json();
+        
+        if (data.success && data.data.status === 'running') {
+            const taskId = data.data.task_id;
+            const seconds = data.data.total_seconds;
+            
+            // Update UI for this task
+            const playBtn = document.getElementById(`timer-play-${taskId}`);
+            const pauseBtn = document.getElementById(`timer-pause-${taskId}`);
+            const stopBtn = document.getElementById(`timer-stop-${taskId}`);
+            
+            if (playBtn && pauseBtn && stopBtn) {
+                playBtn.classList.add('hidden');
+                pauseBtn.classList.remove('hidden');
+                stopBtn.classList.remove('hidden');
+                
+                // Resume timer from where it left off
+                let currentSeconds = seconds;
+                const intervalId = setInterval(() => {
+                    currentSeconds++;
+                    const display = document.getElementById(`timer-display-${taskId}`);
+                    if (display) display.textContent = formatDuration(currentSeconds);
+                }, 1000);
+                
+                activeTimers.set(taskId, {
+                    sessionId: data.data.session_id,
+                    intervalId: intervalId,
+                    startTime: Date.now() - (seconds * 1000)
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Errore check timer:', error);
+    }
+}
+
 // Carica documenti quando si apre la tab
 document.addEventListener('DOMContentLoaded', function() {
     // Carica documenti all'avvio se la tab è attiva
@@ -2205,6 +2400,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     observer.observe(document.getElementById('content-controllo'), { attributes: true, attributeFilter: ['class'] });
+    
+    // Check for active timer
+    setTimeout(checkActiveTimer, 1000);
 });
 </script>
 
