@@ -223,13 +223,18 @@ try {
         
         .loading-screen {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0891b2 100%);
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 50;
+            z-index: 100;
             overflow: hidden;
         }
         
@@ -266,6 +271,12 @@ try {
             z-index: 10;
             text-align: center;
             padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100%;
         }
         
         .loading-logo {
@@ -321,6 +332,8 @@ try {
         .progress-container {
             width: 280px;
             max-width: 80vw;
+            margin: 0 auto;
+            text-align: center;
         }
         
         .progress-bar {
@@ -635,7 +648,7 @@ try {
     </button>
 
     <!-- Skip button -->
-    <button onclick="skipOnboarding()" class="fixed top-4 right-4 text-slate-400 hover:text-slate-600 text-sm font-medium z-50 px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Salta onboarding">
+    <button type="button" onclick="skipOnboarding()" class="fixed top-4 right-4 text-slate-400 hover:text-slate-600 text-sm font-medium px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Salta onboarding" style="z-index: 9999;">
         Salta
     </button>
 
@@ -741,7 +754,12 @@ try {
             if (e.key === 'Escape') skipOnboarding();
         });
         
+        let isRedirecting = false;
+        
         async function startApp() {
+            if (isRedirecting) return;
+            isRedirecting = true;
+            
             // Disabilita interazioni durante il caricamento
             document.body.style.pointerEvents = 'none';
             
@@ -759,13 +777,18 @@ try {
             document.querySelector('.nav-button.prev').style.display = 'none';
             document.querySelector('.nav-button.next').style.display = 'none';
             document.querySelector('nav[aria-label="Navigazione slide"]').style.display = 'none';
-            document.querySelector('button[onclick="skipOnboarding()"]').style.display = 'none';
+            const skipBtn = document.querySelector('button[onclick="skipOnboarding()"]');
+            if (skipBtn) skipBtn.style.display = 'none';
             
             // Mostra schermata caricamento dopo 1s
             setTimeout(() => {
-                document.getElementById('loadingScreen').classList.add('active');
-                document.getElementById('progressFill').classList.add('animate');
-                document.getElementById('loadingProgressBar').setAttribute('aria-valuenow', '100');
+                const loadingScreen = document.getElementById('loadingScreen');
+                const progressFill = document.getElementById('progressFill');
+                const progressBar = document.getElementById('loadingProgressBar');
+                
+                if (loadingScreen) loadingScreen.classList.add('active');
+                if (progressFill) progressFill.classList.add('animate');
+                if (progressBar) progressBar.setAttribute('aria-valuenow', '100');
                 
                 // Anima la percentuale
                 let percent = 0;
@@ -777,7 +800,7 @@ try {
                 }, 100);
             }, 1000);
             
-            // Salva stato guida
+            // Salva stato guida nel DB
             try {
                 await fetch('api/guida.php', {
                     method: 'POST',
@@ -791,11 +814,14 @@ try {
             // Redirect dopo 5 secondi
             setTimeout(() => {
                 localStorage.setItem('taskflow_mostra_guida', 'true');
-                window.location.href = 'dashboard.php?first=true';
+                window.location.replace('dashboard.php?first=true');
             }, 5000);
         }
         
         async function skipOnboarding() {
+            if (isRedirecting) return;
+            isRedirecting = true;
+            
             // Salva stato anche se skippato
             try {
                 await fetch('api/guida.php', {
@@ -808,7 +834,7 @@ try {
             }
             
             localStorage.setItem('taskflow_mostra_guida', 'true');
-            window.location.href = 'dashboard.php?first=true';
+            window.location.replace('dashboard.php?first=true');
         }
         
         function createStars() {

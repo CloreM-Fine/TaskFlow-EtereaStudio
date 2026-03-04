@@ -211,6 +211,14 @@
             window.removeEventListener('resize', resizeHandler);
             resizeHandler = null;
         }
+        // Rimuovi spotlight e resetta z-index elementi
+        const spotlight = document.getElementById('guida-spotlight');
+        if (spotlight) spotlight.remove();
+        document.querySelectorAll('.guida-spotlight-target').forEach(el => {
+            el.classList.remove('guida-spotlight-target');
+            el.style.zIndex = '';
+            el.style.position = '';
+        });
     }
 
     /**
@@ -238,9 +246,22 @@
         const padding = 8;
         const borderRadius = 8;
 
-        // Rimuovi spotlight precedente
+        // Rimuovi spotlight precedente e resetta z-index elementi precedenti
         const oldSpotlight = document.getElementById('guida-spotlight');
         if (oldSpotlight) oldSpotlight.remove();
+        document.querySelectorAll('.guida-spotlight-target').forEach(el => {
+            el.classList.remove('guida-spotlight-target');
+            el.style.zIndex = '';
+            el.style.position = '';
+        });
+
+        // Porta l'elemento target in primo piano
+        element.classList.add('guida-spotlight-target');
+        const originalZIndex = window.getComputedStyle(element).zIndex;
+        element.style.zIndex = '10000';
+        if (window.getComputedStyle(element).position === 'static') {
+            element.style.position = 'relative';
+        }
 
         // Crea elemento spotlight
         const spotlight = document.createElement('div');
@@ -254,13 +275,15 @@
             border: 3px solid ${CONFIG.spotlightColor};
             border-radius: ${borderRadius}px;
             box-shadow: 
-                0 0 0 9999px rgba(15, 23, 42, 0.85),
-                0 0 20px ${CONFIG.spotlightColor},
-                inset 0 0 20px rgba(8, 145, 178, 0.1);
+                0 0 0 9999px rgba(15, 23, 42, 0.75),
+                0 0 30px ${CONFIG.spotlightColor},
+                0 0 60px rgba(8, 145, 178, 0.3),
+                inset 0 0 20px rgba(8, 145, 178, 0.2);
             z-index: 9999;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             animation: guidaspotlight-pulse 2s infinite;
+            background: rgba(8, 145, 178, 0.05);
         `;
 
         // Aggiungi animazione CSS se non esiste
@@ -648,6 +671,12 @@
         // Pulisci localStorage
         localStorage.removeItem(CONFIG.storageKey);
         localStorage.removeItem(CONFIG.showGuidaKey);
+
+        // Chiudi la sidebar
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && !sidebar.classList.contains('sidebar-collapsed')) {
+            sidebar.classList.add('sidebar-collapsed');
+        }
 
         // Marca guida come vista
         markGuidaAsSeen();
