@@ -17,6 +17,21 @@ try {
 
 $pageTitle = 'Dashboard';
 
+// Verifica se mostrare onboarding
+$userId = $_SESSION['user_id'] ?? '';
+if ($userId) {
+    // Controlla se l'utente ha già visto l'onboarding
+    $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
+    $stmt->execute([$userId]);
+    $user = $stmt->fetch();
+    
+    if ($user && !$user['guidavista']) {
+        // Reindirizza alla pagina di onboarding
+        header('Location: onboarding.php');
+        exit;
+    }
+}
+
 // Ottieni statistiche
 $stats = getDashboardStats($_SESSION['user_id']);
 
