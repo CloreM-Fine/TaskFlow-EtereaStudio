@@ -389,9 +389,10 @@ try {
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold overflow-hidden" 
                      style="background-color: <?php echo e($currentUser['colore']); ?>">
-                    <?php if (!empty($currentUser['avatar']) && file_exists(__DIR__ . '/../assets/uploads/avatars/' . $currentUser['avatar'])): ?>
+                    <?php if (!empty($currentUser['avatar'])): ?>
                         <img src="assets/uploads/avatars/<?php echo e($currentUser['avatar']); ?>" 
-                             alt="Avatar" class="w-full h-full object-cover">
+                             alt="Avatar" class="w-full h-full object-cover"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<?php echo e(substr($currentUser['nome'], 0, 2)); ?>';">
                     <?php else: ?>
                         <?php echo e(substr($currentUser['nome'], 0, 2)); ?>
                     <?php endif; ?>
@@ -560,9 +561,10 @@ try {
                         <button class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 transition-colors touch-target">
                             <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold overflow-hidden" 
                                  style="background-color: <?php echo e($currentUser['colore']); ?>">
-                                <?php if (!empty($currentUser['avatar']) && file_exists(__DIR__ . '/../assets/uploads/avatars/' . $currentUser['avatar'])): ?>
+                                <?php if (!empty($currentUser['avatar'])): ?>
                                     <img src="assets/uploads/avatars/<?php echo e($currentUser['avatar']); ?>" 
-                                         alt="Avatar" class="w-full h-full object-cover">
+                                         alt="Avatar" class="w-full h-full object-cover"
+                                         onerror="this.style.display='none'; this.parentElement.innerHTML='<?php echo e(substr($currentUser['nome'], 0, 2)); ?>';">
                                 <?php else: ?>
                                     <?php echo e(substr($currentUser['nome'], 0, 2)); ?>
                                 <?php endif; ?>
@@ -645,9 +647,10 @@ try {
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold overflow-hidden" 
                  style="background-color: <?php echo e($currentUser['colore']); ?>">
-                <?php if (!empty($currentUser['avatar']) && file_exists(__DIR__ . '/../assets/uploads/avatars/' . $currentUser['avatar'])): ?>
+                <?php if (!empty($currentUser['avatar'])): ?>
                     <img src="assets/uploads/avatars/<?php echo e($currentUser['avatar']); ?>" 
-                         alt="Avatar" class="w-full h-full object-cover">
+                         alt="Avatar" class="w-full h-full object-cover"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<?php echo e(substr($currentUser['nome'], 0, 2)); ?>';">
                 <?php else: ?>
                     <?php echo e(substr($currentUser['nome'], 0, 2)); ?>
                 <?php endif; ?>
