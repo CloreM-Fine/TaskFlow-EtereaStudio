@@ -20,7 +20,7 @@ $pageTitle = 'Benvenuto';
 
 // Se guida già vista, redirect a dashboard
 try {
-    $stmt = $pdo->prepare("SELECT guida_vista FROM utenti WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT guidavista FROM utenti WHERE id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     if ($stmt->fetchColumn() == 1) {
         header('Location: dashboard.php');
