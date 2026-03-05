@@ -52,15 +52,15 @@ CREATE TABLE IF NOT EXISTS monthly_stats (
 -- 4. Colonna per tracciare visualizzazioni progetti
 -- -----------------------------------------------------
 ALTER TABLE progetti 
-ADD COLUMN IF NOT EXISTS view_count INT DEFAULT 0 COMMENT 'Numero visualizzazioni',
-ADD COLUMN IF NOT EXISTS last_viewed_at DATETIME NULL COMMENT 'Ultima visualizzazione';
+ADD COLUMN view_count INT DEFAULT 0 COMMENT 'Numero visualizzazioni',
+ADD COLUMN last_viewed_at DATETIME NULL COMMENT 'Ultima visualizzazione';
 
 -- -----------------------------------------------------
 -- 5. Colonna per tracciare tempo lavorato su task
 -- -----------------------------------------------------
 ALTER TABLE task 
-ADD COLUMN IF NOT EXISTS started_at DATETIME NULL COMMENT 'Quando il task è stato iniziato',
-ADD COLUMN IF NOT EXISTS completed_at DATETIME NULL COMMENT 'Quando il task è stato completato';
+ADD COLUMN started_at DATETIME NULL COMMENT 'Quando il task è stato iniziato',
+ADD COLUMN completed_at DATETIME NULL COMMENT 'Quando il task è stato completato';
 
 -- -----------------------------------------------------
 -- Messaggio di conferma
