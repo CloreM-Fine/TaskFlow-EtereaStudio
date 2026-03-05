@@ -75,3 +75,4 @@ php5.ini
 test/
 tests/
 phpunit.xml
+.env
